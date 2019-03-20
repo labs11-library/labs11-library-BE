@@ -8,7 +8,7 @@ const createFakeUser = () => ({
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
   location: `${faker.address.latitude()},${faker.address.longitude()}`,
-  picture: faker.image.imageUrl(),
+  picture: faker.random.image(),
   bio: faker.lorem.sentence()
 });
 exports.seed = function(knex, Promise) {
