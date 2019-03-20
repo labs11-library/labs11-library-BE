@@ -1,7 +1,9 @@
 const express = require("express");
-
+const config = require("./middleware/middleware.js");
 const server = express();
 const db = require("../data/dbConfig");
+
+config(server);
 
 server.get("/", (req, res) => {
 	res.status(200).json({ api: "running" });
