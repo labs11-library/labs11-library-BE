@@ -8,4 +8,4 @@ const config = require("../knexfile");
 // module.exports = knex(config[dbEnv]);
 const environment = process.env.ENVIRONMENT || "development";
 
-module.exports = knex(knexConfig[environment]);
+module.exports = knex(config[environment]);
