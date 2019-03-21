@@ -5,6 +5,12 @@ const db = require("../data/dbConfig");
 
 config(server);
 
+// Routes
+
+const auth = require('./routes/authRoutes')
+
+server.use('/auth', auth)
+
 server.get("/", (req, res) => {
   res.status(200).json({ api: "running" });
 });
