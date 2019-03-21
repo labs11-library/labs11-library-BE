@@ -1,0 +1,41 @@
+{
+	"name": "labs11-library-be",
+	"version": "1.0.0",
+	"description": "**Contributors**",
+	"main": "index.js",
+	"scripts": {
+		"server": "nodemon index.js",
+		"test": "cross-env DB_ENV=testing jest --watchAll --verbose",
+		"start": "node index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/labs11-library/labs11-library-BE.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/labs11-library/labs11-library-BE/issues"
+	},
+	"homepage": "https://github.com/labs11-library/labs11-library-BE#readme",
+	"devDependencies": {
+		"jest": "^24.5.0",
+		"nodemon": "^1.18.10",
+		"supertest": "^4.0.2"
+	},
+	"dependencies": {
+		"cors": "^2.8.5",
+		"cross-env": "^5.2.0",
+		"dotenv": "^7.0.0",
+		"dotenv-extended": "^2.4.0",
+		"express": "^4.16.4",
+		"faker": "^4.1.0",
+		"helmet": "^3.16.0",
+		"jsonwebtoken": "^8.5.1",
+		"knex": "^0.16.3",
+		"morgan": "^1.9.1",
+		"pg": "^7.9.0",
+		"sqlite3": "^4.0.6"
+	}
+}
