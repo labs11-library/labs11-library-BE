@@ -14,7 +14,7 @@ const createFakeUser = () => ({
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   let fakeUsers = [];
-  for (let i = 1; i <= 99; i++) {
+  for (let i = 1; i <= 500; i++) {
     fakeUsers.push(createFakeUser());
   }
   return knex("users")
