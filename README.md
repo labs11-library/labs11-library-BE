@@ -7,5 +7,3 @@
 - [Henry Neal](https://github.com/henron1)
 - [David Flack](https://github.com/Zooheck)
 - [Blake Fletcher](https://github.com/blkfltchr)
-
-change
