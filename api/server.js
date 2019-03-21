@@ -2,8 +2,12 @@ const express = require("express");
 const config = require("./middleware/middleware.js");
 const server = express();
 const db = require("../data/dbConfig");
+const passport = require('passport');
 
 config(server);
+
+server.use(passport.initialize());
+server.use(passport.session());
 
 // Routes
 
