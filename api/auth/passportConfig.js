@@ -51,10 +51,27 @@ passport.use(
     },
     function(accessToken, refreshToken, profile, done) {
       console.log(profile);
-      // User.findOrCreate(..., function(err, user) {
-      //   if (err) { return done(err); }
-      //   done(null, user);
-      // });
+      db.findUserByFacebookId(profile.id).then(id => {
+        console.log("profile", profile);
+        if (id) {
+          return done(null, profile);
+        } else {
+          db.getUsers()
+            .insert(
+              {
+                facebookId: profile.id,
+                firstName: profile.name.givenName,
+                lastName: profile.name.familyName,
+                email: profile.emails[0].value,
+                picture: profile.photos[0].value
+              },
+              "*"
+            )
+            .then(users => {
+              return done(null, users[0]);
+            });
+        }
+      });
     }
   )
 );

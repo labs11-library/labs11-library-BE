@@ -7,6 +7,12 @@ module.exports = {
       .where({ googleId: profileId })
       .first();
   },
+  findUserByFacebookId: profileId => {
+    return knex("users")
+      .select()
+      .where({ facebookId: profileId })
+      .first();
+  },
 
   getUsers: () => {
     return knex("users");
