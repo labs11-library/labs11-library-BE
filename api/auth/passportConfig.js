@@ -3,6 +3,7 @@ const db = require("./query");
 
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 
 passport.use(
   new GoogleStrategy(
@@ -38,7 +39,25 @@ passport.use(
     }
   )
 );
-
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FB_APP_ID,
+      clientSecret: process.env.FB_APP_SECRET,
+      callbackURL:
+        process.env.FB_CALLBACK_URL ||
+        "http://localhost:9001/auth/facebook/callback",
+      profileFields: ["id", "emails", "name", "picture.type(large)"]
+    },
+    function(accessToken, refreshToken, profile, done) {
+      console.log(profile);
+      // User.findOrCreate(..., function(err, user) {
+      //   if (err) { return done(err); }
+      //   done(null, user);
+      // });
+    }
+  )
+);
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
