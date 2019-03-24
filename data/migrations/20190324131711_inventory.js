@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
-    table.boolean("available").defaultTo(false);
+    table.boolean("available").defaultTo(true);
   });
 };
 
