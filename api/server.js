@@ -12,8 +12,10 @@ server.use(passport.session());
 // Routes
 
 const auth = require("./routes/authRoutes");
+const bookRoutes = require("./routes/bookRoutes");
 
 server.use("/auth", auth);
+server.use("/books", bookRoutes);
 
 server.get("/", (req, res) => {
   res.status(200).json({ api: "running" });
