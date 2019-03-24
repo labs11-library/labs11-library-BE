@@ -13,8 +13,10 @@ server.use(passport.session());
 
 const auth = require("./routes/authRoutes");
 const bookRoutes = require("./routes/bookRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 server.use("/auth", auth);
+server.use("/users", userRoutes);
 server.use("/books", bookRoutes);
 
 server.get("/", (req, res) => {

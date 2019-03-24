@@ -1,10 +1,11 @@
 const express = require("express");
+const db = require("../../data/dbConfig");
 const router = express.Router();
 
 const rp = require("request-promise");
 const { parseString } = require("xml2js");
 
-router.get("/", (req, res) => {
+router.get("/search", (req, res) => {
   rp.get(
     `https://www.goodreads.com/search/index.xml?key=${
       process.env.GOODREADS_KEY
@@ -24,6 +25,31 @@ router.get("/", (req, res) => {
       })
     )
   );
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const books = await db("books").orderBy("bookId");
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const book = await db("books").insert(req.body);
+    const newBookList = await db("books");
+    if (book) {
+      return res
+        .status(200)
+        .json({ message: "Book successfully added", newBookList });
+    } else {
+      return res.status(404).json(error);
+    }
+  } catch (error) {
+    return res.status(500).json(error);
+  }
 });
 
 module.exports = router;
