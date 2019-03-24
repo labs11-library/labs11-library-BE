@@ -13,6 +13,7 @@ function getInventory(userId) {
     .join("books", "inventory.bookId", "books.bookId")
     .select(
       "users.firstName",
+      "users.userId",
       "inventory.inventoryId",
       "inventory.bookId",
       "inventory.available"
