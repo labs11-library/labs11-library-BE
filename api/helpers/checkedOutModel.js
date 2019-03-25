@@ -18,13 +18,13 @@ function getCheckedOut(userId) {
       "inventory.userId"
     )
     .select(
-      "users.firstName as Borrower", //firstName from Users table, person borrowing,
+      "users.firstName as borrower", //firstName from Users table, person borrowing,
       "users.userId", //ID from users Table, person borrowing ID
       "inventory.bookId", //ID from inventory table, ID of the book being borrowed
       "checkedOut.checkedOutId",
       "checkedOut.checkoutDate",
       "checkedOut.dueDate",
-      "checkedOut.lenderName as Lender"
+      "checkedOut.lenderName as lender"
     )
     .where("users.userId", userId);
 
