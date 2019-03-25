@@ -15,6 +15,13 @@ exports.up = function(knex, Promise) {
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
+    table
+      .string("firstName")
+      .unsigned()
+      .references("firstName")
+      .inTable("users")
+      .onDelete("CASCADE")
+      .onUpdate("CASCADE");
     table.boolean("available").defaultTo(true);
   });
 };

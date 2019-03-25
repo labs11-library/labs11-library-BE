@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Inventory = require("../helpers/inventoryModel");
+const CheckedOut = require("../helpers/checkedOutModel");
 
 const rp = require("request-promise");
 const { parseString } = require("xml2js");
@@ -63,6 +64,39 @@ router.post("/:id/inventory", async (req, res) => {
     const item = await db("inventory").insert(req.body);
     if (item) {
       res.status(200).json({ message: "Book added to shelf!" });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//--------CHECKEDOUT
+
+//GET user checkedOut
+
+router.get("/:id/checkedOut", async (req, res) => {
+  try {
+    const checkedOut = await CheckedOut.getCheckedOut(req.params.id);
+    if (checkedOut) {
+      res.status(200).json(checkedOut);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//POST to checkedOut
+
+router.post("/:id/checkedOut", async (req, res) => {
+  try {
+    // const checkedOut = await Inventory.getInventory(req.params.id);
+    const item = await db("checkedOut").insert(req.body);
+    if (item) {
+      res.status(200).json({ message: "Book checked out!" });
     } else {
       res.status(404).json(error);
     }
