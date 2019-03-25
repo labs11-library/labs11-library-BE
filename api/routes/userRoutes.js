@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Inventory = require("../helpers/inventoryModel");
 const CheckedOut = require("../helpers/checkedOutModel");
 
 const rp = require("request-promise");
@@ -44,7 +43,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/inventory", async (req, res) => {
   try {
-    const inventory = await Inventory.getInventory(req.params.id);
+    const inventory = await db("books").where({ userId: req.params.id });
     console.log(inventory);
     if (inventory) {
       res.status(200).json(inventory);
