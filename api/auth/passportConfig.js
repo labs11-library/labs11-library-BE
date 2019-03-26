@@ -18,8 +18,14 @@ passport.use(
       db.findUserByGoogleId(profile.id).then(id => {
         console.log("profile", profile);
         if (id) {
-          return done(null, profile);
+          let userData = {
+            token: accessToken
+          }
+          return done(null, profile, userData.token); 
         } else {
+          let userData = {
+            token: accessToken
+          }
           db.getUsers()
             .insert(
               {
@@ -27,12 +33,12 @@ passport.use(
                 firstName: profile.name.givenName,
                 lastName: profile.name.familyName,
                 email: profile.emails[0].value,
-                picture: profile.photos[0].value
+                picture: profile.photos[0].value,
               },
               "*"
             )
             .then(users => {
-              return done(null, users[0]);
+              return done(null, users[0], userData.token);
             });
         }
       });
