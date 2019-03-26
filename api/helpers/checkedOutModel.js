@@ -9,24 +9,30 @@ module.exports = {
 
 function getCheckedOut(userId) {
   const items = db("checkedOut")
-    .join("users", "checkedOut.userId", "users.userId")
+    .join("users as borrowers", "checkedOut.borrowerId", "borrowers.userId")
+    .join("users as lenders", "checkedOut.lenderId", "lenders.userId")
     .join(
-      "inventory",
+      "books",
       // "checkedOut.bookId",
       // "inventory.bookId",
-      "checkedOut.lenderId",
-      "inventory.userId"
+      "checkedOut.bookId",
+      "books.bookId"
     )
     .select(
-      "users.firstName as borrower", //firstName from Users table, person borrowing,
-      "users.userId", //ID from users Table, person borrowing ID
-      "inventory.bookId", //ID from inventory table, ID of the book being borrowed
+      "borrowers.firstName as borrower", //firstName from Users table, person borrowing,
+      "checkedOut.borrowerId as borrowerId", //ID from users Table, person borrowing ID
+      "books.bookId", //ID from inventory table, ID of the book being borrowed
+      "books.title",
+      "books.authors",
+      "books.description",
       "checkedOut.checkedOutId",
       "checkedOut.checkoutDate",
       "checkedOut.dueDate",
-      "checkedOut.lenderName as lender"
+      "checkedOut.lenderId as lenderId",
+      "lenders.firstName as lender"
     )
-    .where("users.userId", userId);
+    .where("borrowers.userId", userId)
+    .orWhere("lenders.userId", userId);
 
   return items;
 }

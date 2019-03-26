@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Inventory = require("../helpers/inventoryModel");
 const CheckedOut = require("../helpers/checkedOutModel");
 
 const rp = require("request-promise");
@@ -16,6 +15,23 @@ router.get("/", async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Could not retrieve users at this time." });
+  }
+});
+
+//CREATE user (POST)
+
+router.post("/", async (req, res) => {
+  try {
+    const user = await db("users").insert(req.body);
+    if (user) {
+      return res.status(200).json({ message: "User created successfully." });
+    } else {
+      return res
+        .status(404)
+        .json({ error: "The user could not be created at this time." });
+    }
+  } catch (error) {
+    return res.status(500).json(error);
   }
 });
 
@@ -40,11 +56,35 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//EDIT USER
+
+router.put("/:id", async (req, res) => {
+  try {
+    const edited = await db("users")
+      .where({ userId: req.params.id })
+      .update(req.body);
+    const editedUser = await db("users")
+      .where({ userId: req.params.id })
+      .first();
+    if (edited) {
+      return res
+        .status(200)
+        .json({ message: "User successfully edited!", editedUser });
+    } else {
+      return res
+        .status(404)
+        .json({ error: "The user with the specified ID does not exist." });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 //GET user inventory
 
 router.get("/:id/inventory", async (req, res) => {
   try {
-    const inventory = await Inventory.getInventory(req.params.id);
+    const inventory = await db("books").where({ userId: req.params.id });
     console.log(inventory);
     if (inventory) {
       res.status(200).json(inventory);
