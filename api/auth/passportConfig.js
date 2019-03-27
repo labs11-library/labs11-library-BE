@@ -1,9 +1,13 @@
 require("dotenv").config();
 const db = require("./query");
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET;
 
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
+
+// const token = require("./token-gen");
 
 passport.use(
   new GoogleStrategy(
@@ -16,7 +20,7 @@ passport.use(
     (accessToken, refreshToken, profile, done) => {
       // callback
       db.findUserByGoogleId(profile.id).then(id => {
-        console.log("profile", profile);
+        // console.log("profile", profile);
         if (id) {
           return done(null, profile);
         } else {
@@ -32,6 +36,7 @@ passport.use(
               "*"
             )
             .then(users => {
+              console.log("users", users)
               return done(null, users[0]);
             });
         }
@@ -39,6 +44,26 @@ passport.use(
     }
   )
 );
+
+// line 25
+// console.log("id", id)
+  // const payload = {
+  //   subject: id.userId
+  // };
+
+  // jwt.sign(
+  //   payload,
+  //   secret,
+  //   { expiresIn: "1d" },
+  //   (err, token) => {
+  //     res.json({
+  //       success: true,
+  //       token
+  //     });
+  //   }
+  // );
+// let token = token.generateToken(id);
+
 passport.use(
   new FacebookStrategy(
     {
@@ -75,6 +100,7 @@ passport.use(
     }
   )
 );
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -84,3 +110,20 @@ passport.deserializeUser((id, done) => {
     done(err, user);
   });
 });
+
+// Line 40
+// const payload = {
+//   subject: users.userId
+// };
+
+// jwt.sign(
+//   payload,
+//   secret,
+//   { expiresIn: "1d" },
+//   (err, token) => {
+//     res.json({
+//       success: true,
+//       token
+//     });
+//   }
+// );
