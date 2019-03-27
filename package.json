@@ -33,6 +33,7 @@
 		"datauri": "^1.1.0",
 		"dotenv": "^7.0.0",
 		"dotenv-extended": "^2.4.0",
+		"ejs": "^2.6.1",
 		"express": "^4.16.4",
 		"express-pino-logger": "^4.0.0",
 		"faker": "^4.1.0",
@@ -48,6 +49,7 @@
 		"request": "^2.88.0",
 		"request-promise": "^4.2.4",
 		"sqlite3": "^4.0.6",
+		"stripe": "^6.28.0",
 		"twilio": "^3.29.2",
 		"xml2js": "^0.4.19"
 	}
