@@ -1,9 +1,12 @@
 require("dotenv").config();
 const db = require("./query");
+const jwt = require("jsonwebtoken");
 
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
+
+// const token = require("./token-gen");
 
 passport.use(
   new GoogleStrategy(
@@ -16,8 +19,9 @@ passport.use(
     (accessToken, refreshToken, profile, done) => {
       // callback
       db.findUserByGoogleId(profile.id).then(id => {
-        console.log("profile", profile);
+        // console.log("profile", profile);
         if (id) {
+          // let token = token.generateToken(id);
           return done(null, profile);
         } else {
           db.getUsers()
@@ -32,6 +36,22 @@ passport.use(
               "*"
             )
             .then(users => {
+              // let token = token.generateToken(users.userId);
+
+              jwt.sign(
+                payload,
+                keys.tokenKey,
+                { expiresIn: 3600 },
+                (err, token) => {
+                  res.json({
+                    success: true,
+                    token: "Bearer " + token
+                  });
+                }
+              );
+              // res.json({
+              //   token
+              // });
               return done(null, users[0]);
             });
         }

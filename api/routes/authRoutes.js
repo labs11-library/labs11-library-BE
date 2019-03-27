@@ -16,7 +16,12 @@ router.get(
 // DESC:    Allow users to authenticate with google
 // ACCESS:  Public
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-  res.redirect("/users");
+  // console.log("this is the request", req);
+  // console.log("this is the user request", req.user);
+  // console.log("this is the user request token", req.user.token);
+  console.log(req.query.code);
+  let token = req.query.code;
+  res.redirect("http://localhost:3000?token=" + token);
 });
 
 // Redirect the user to Facebook for authentication.  When complete,
