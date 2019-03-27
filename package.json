@@ -28,6 +28,7 @@
 		"axios": "^0.18.0",
 		"body-parser": "^1.18.3",
 		"cloudinary": "^1.13.2",
+		"connect-session-knex": "^1.4.0",
 		"cors": "^2.8.5",
 		"cross-env": "^5.2.0",
 		"datauri": "^1.1.0",
@@ -36,6 +37,7 @@
 		"ejs": "^2.6.1",
 		"express": "^4.16.4",
 		"express-pino-logger": "^4.0.0",
+		"express-session": "^1.15.6",
 		"faker": "^4.1.0",
 		"helmet": "^3.16.0",
 		"jsonwebtoken": "^8.5.1",
@@ -51,6 +53,7 @@
 		"sqlite3": "^4.0.6",
 		"stripe": "^6.28.0",
 		"twilio": "^3.29.2",
+		"uuidv4": "^3.0.1",
 		"xml2js": "^0.4.19"
 	}
 }
