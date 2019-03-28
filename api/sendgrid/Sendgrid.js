@@ -1,11 +1,10 @@
+require("dotenv").config();
 const sgMail = require("@sendgrid/mail");
 const express = require("express");
 const router = express.Router();
 
 // const sgKey = process.env.SG_KEY;
-sgMail.setApiKey(
-	`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`
-);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.get("/", (req, res) => {
 	res.send("test of the sendgrid server");
@@ -20,8 +19,8 @@ router.get("/send-email", (req, res) => {
 		subject: topic,
 		text: text
 	};
-
-	sgMail.send(message).then(message => console.log(req.query));
+	console.log(message);
+	sgMail.send(message);
 });
 
 module.exports = router;
