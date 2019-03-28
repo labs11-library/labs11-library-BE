@@ -11,7 +11,7 @@ const db = require("../../data/dbConfig");
 
 //GET all users
 
-router.get("/", async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
     const users = await db("users").orderBy("userId");
     res.status(200).json(users);
@@ -90,6 +90,44 @@ router.get("/:id/inventory", async (req, res) => {
     console.log(inventory);
     if (inventory) {
       res.status(200).json(inventory);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//GET user specific inventory by id
+
+router.get("/:id/inventory/:bookId", async (req, res) => {
+  try {
+    const inventory = await db("books").where({ userId: req.params.id });
+    const book = await db("books").where({ bookId: req.params.bookId });
+    console.log(book);
+    if (inventory && book) {
+      res.status(200).json(book);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//PUT (EDIT) user specific inventory by id
+
+router.put("/:id/inventory/:bookId", async (req, res) => {
+  try {
+    const book = await db("books")
+      .where({ bookId: req.params.bookId })
+      .first()
+      .update(req.body);
+    const editedBook = await db("books")
+      .where({ bookId: req.params.bookId })
+      .first();
+    if (editedBook) {
+      res.status(200).json({ message: "Book edited!", editedBook });
     } else {
       res.status(404).json(error);
     }
