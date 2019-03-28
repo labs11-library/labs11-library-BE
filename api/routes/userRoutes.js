@@ -1,15 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const CheckedOut = require("../helpers/checkedOutModel");
+const passport = require("passport");
+const { authenticate } = require("../auth/authenticate");
 
 const rp = require("request-promise");
 const { parseString } = require("xml2js");
 
 const db = require("../../data/dbConfig");
 
+function protected(req, res, next) {
+  // if the use is logged in, use next()
+  if (req.sessionKey === "bookmaps") {
+    next();
+  } else {
+    res.status(401).json({ message: "You could not be logged in." });
+  }
+}
+
 //GET all users
 
-router.get("/", async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
     const users = await db("users").orderBy("userId");
     res.status(200).json(users);

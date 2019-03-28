@@ -1,13 +1,33 @@
 require("dotenv").config();
-const db = require("./query");
+// const db = require("./query");
+const db = require("../../data/dbConfig");
 const jwt = require("jsonwebtoken");
 const secret = process.env.JWT_SECRET;
 
 const passport = require("passport");
+// const BearerStrategy = require("passport-http-bearer");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
+// const CookieStrategy = require("passport-cookie");
 
-// const token = require("./token-gen");
+const generateToken = require("./token-gen");
+
+passport.serializeUser((user, done) => {
+  console.log(user);
+  done(null, user.userId);
+});
+
+passport.deserializeUser((id, done) => {
+  db("users")
+    .where({ userId: id })
+    .first()
+    .then(user => {
+      if (!user) {
+        done(new Error("User not found " + id));
+      }
+      done(null, user);
+    });
+});
 
 passport.use(
   new GoogleStrategy(
@@ -17,51 +37,58 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       // callback
-      db.findUserByGoogleId(profile.id).then(id => {
-        // console.log("profile", profile);
-        if (id) {
-          return done(null, profile);
-        } else {
-          db.getUsers()
-            .insert(
-              {
-                googleId: profile.id,
-                firstName: profile.name.givenName,
-                lastName: profile.name.familyName,
-                email: profile.emails[0].value,
-                picture: profile.photos[0].value
-              },
-              "*"
-            )
-            .then(users => {
-              console.log("users", users)
-              return done(null, users[0]);
-            });
-        }
-      });
+      console.log(profile);
+      const existingUser = await db("users")
+        .where({
+          email: profile.emails[0].value
+        })
+        .first();
+      // console.log("profile", profile);
+      if (existingUser) {
+        let accessToken = generateToken.generateToken(existingUser.email);
+        existingUser.token = accessToken;
+        done(null, existingUser);
+      } else {
+        let accessToken = generateToken.generateToken(
+          profile.profile.emails[0].value
+        );
+        await db("users").insert({
+          googleId: profile.id,
+          firstName: profile.name.givenName,
+          lastName: profile.name.familyName,
+          email: profile.emails[0].value,
+          picture: profile.photos[0].value,
+          token: accessToken
+        });
+        const user = await db("users")
+          .where({ googleId: profile.userId })
+          .first();
+
+        done(null, user);
+      }
     }
   )
 );
 
 // line 25
 // console.log("id", id)
-  // const payload = {
-  //   subject: id.userId
-  // };
+// const payload = {
+//   subject: id.userId
+// };
 
-  // jwt.sign(
-  //   payload,
-  //   secret,
-  //   { expiresIn: "1d" },
-  //   (err, token) => {
-  //     res.json({
-  //       success: true,
-  //       token
-  //     });
-  //   }
-  // );
+// jwt.sign(
+//   payload,
+//   secret,
+//   { expiresIn: "1d" },
+//   (err, token) => {
+//     res.json({
+//       success: true,
+//       token
+//     });
+//   }
+// );
 // let token = token.generateToken(id);
 
 passport.use(
@@ -100,16 +127,6 @@ passport.use(
     }
   )
 );
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
-});
 
 // Line 40
 // const payload = {
