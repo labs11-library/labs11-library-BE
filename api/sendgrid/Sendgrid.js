@@ -2,7 +2,10 @@ const sgMail = require("@sendgrid/mail");
 const express = require("express");
 const router = express.Router();
 
-sgMail.setApiKey(process.env.SG_KEY);
+const sgKey = process.env.SG_KEY;
+sgMail.setApiKey(
+	`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`
+);
 
 router.get("/", (req, res) => {
 	res.send("test of the sendgrid server");
@@ -20,3 +23,5 @@ router.get("/send-email", (req, res) => {
 
 	sgMail.send(msg).then(msg => console.log(text));
 });
+
+module.exports = router;
