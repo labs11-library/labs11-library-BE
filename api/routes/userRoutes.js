@@ -39,10 +39,10 @@ router.post("/", async (req, res) => {
 
 //GET user by id
 
-router.get("/:id", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     const user = await db("users")
-      .where({ userId: req.params.id })
+      .where({ userId: req.params.userId })
       .first();
     if (user) {
       res.status(200).json(user);
@@ -60,13 +60,13 @@ router.get("/:id", async (req, res) => {
 
 //EDIT USER
 
-router.put("/:id", async (req, res) => {
+router.put("/:userId", async (req, res) => {
   try {
     const edited = await db("users")
-      .where({ userId: req.params.id })
+      .where({ userId: req.params.userId })
       .update(req.body);
     const editedUser = await db("users")
-      .where({ userId: req.params.id })
+      .where({ userId: req.params.userId })
       .first();
     if (edited) {
       return res
@@ -84,9 +84,9 @@ router.put("/:id", async (req, res) => {
 
 //GET user inventory
 
-router.get("/:id/inventory", async (req, res) => {
+router.get("/:userId/inventory", async (req, res) => {
   try {
-    const inventory = await db("books").where({ userId: req.params.id });
+    const inventory = await db("books").where({ userId: req.params.userId });
     console.log(inventory);
     if (inventory) {
       res.status(200).json(inventory);
@@ -100,9 +100,9 @@ router.get("/:id/inventory", async (req, res) => {
 
 //GET user specific inventory by id
 
-router.get("/:id/inventory/:bookId", async (req, res) => {
+router.get("/:userId/inventory/:bookId", async (req, res) => {
   try {
-    const inventory = await db("books").where({ userId: req.params.id });
+    const inventory = await db("books").where({ userId: req.params.userId });
     const book = await db("books").where({ bookId: req.params.bookId });
     console.log(book);
     if (inventory && book) {
@@ -117,7 +117,7 @@ router.get("/:id/inventory/:bookId", async (req, res) => {
 
 //PUT (EDIT) user specific inventory by id
 
-router.put("/:id/inventory/:bookId", async (req, res) => {
+router.put("/:userIdid/inventory/:bookId", async (req, res) => {
   try {
     const book = await db("books")
       .where({ bookId: req.params.bookId })
@@ -138,7 +138,7 @@ router.put("/:id/inventory/:bookId", async (req, res) => {
 
 //POST to inventory
 
-router.post("/:id/inventory", async (req, res) => {
+router.post("/:userId/inventory", async (req, res) => {
   try {
     // const inventory = await Inventory.getInventory(req.params.id);
     const item = await db("inventory").insert(req.body);
@@ -156,9 +156,9 @@ router.post("/:id/inventory", async (req, res) => {
 
 //GET user checkedOut
 
-router.get("/:id/checkedOut", async (req, res) => {
+router.get("/:userId/checkedOut", async (req, res) => {
   try {
-    const checkedOut = await CheckedOut.getCheckedOut(req.params.id);
+    const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
     if (checkedOut) {
       res.status(200).json(checkedOut);
     } else {
@@ -169,9 +169,26 @@ router.get("/:id/checkedOut", async (req, res) => {
   }
 });
 
+//GET specific user checkedOut event by ID
+
+router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
+  try {
+    const checkedOutEvent = await db("checkedOut").where({
+      checkedOutId: req.params.checkedOutId
+    });
+    if (checkedOutEvent) {
+      res.status(200).json(checkedOutEvent);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 //POST to checkedOut
 
-router.post("/:id/checkedOut", async (req, res) => {
+router.post("/:userId/checkedOut", async (req, res) => {
   try {
     // const checkedOut = await Inventory.getInventory(req.params.id);
     const item = await db("checkedOut").insert(req.body);
