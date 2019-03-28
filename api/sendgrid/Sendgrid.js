@@ -1,6 +1,5 @@
 const sgMail = require("@sendgrid/mail");
 const express = require("express");
-// const db = require("../../data/dbConfig");
 const router = express.Router();
 
 sgMail.setApiKey(process.env.SG_KEY);
@@ -18,4 +17,6 @@ router.get("/send-email", (req, res) => {
 		subject: topic,
 		text: text
 	};
+
+	sgMail.send(msg).then(msg => console.log(text));
 });
