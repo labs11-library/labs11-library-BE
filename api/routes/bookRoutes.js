@@ -52,4 +52,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get('/:bookId', async (req, res) => {
+  try {
+    const item = await db('books').where({ bookId: req.params.bookId });
+    if (item) {
+      res.status(200).json(book);
+    } else {
+      res.status(404).json({ message: "Could not find a book with that ID."})
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Could not retrieve the book at this time."})
+  }
+});
+
 module.exports = router;
