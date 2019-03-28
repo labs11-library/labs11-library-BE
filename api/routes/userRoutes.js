@@ -145,9 +145,12 @@ router.put("/:userIdid/inventory/:bookId", async (req, res) => {
 router.post("/:userId/inventory", async (req, res) => {
   try {
     // const inventory = await Inventory.getInventory(req.params.id);
-    const book = await db("books").insert(req.body);
-    const item = await db("inventory").insert(req.body);
-    if ((item, book)) {
+    // const book = await db("books").insert(req.body);
+    const item = await db("books").insert({
+      ...req.body,
+      userId: req.params.userId
+    });
+    if (item) {
       res.status(200).json({ message: "Book added to shelf!" });
     } else {
       res.status(404).json(error);
@@ -196,7 +199,10 @@ router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
 router.post("/:userId/checkedOut", async (req, res) => {
   try {
     // const checkedOut = await Inventory.getInventory(req.params.id);
-    const item = await db("checkedOut").insert(req.body);
+    const item = await db("checkedOut").insert({
+      ...req.body,
+      userId: req.params.userId
+    });
     if (item) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
