@@ -11,7 +11,7 @@ const db = require("../../data/dbConfig");
 
 //GET all users
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await db("users").orderBy("userId");
     res.status(200).json(users);
