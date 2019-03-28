@@ -145,8 +145,9 @@ router.put("/:userIdid/inventory/:bookId", async (req, res) => {
 router.post("/:userId/inventory", async (req, res) => {
   try {
     // const inventory = await Inventory.getInventory(req.params.id);
+    const book = await db("books").insert(req.body);
     const item = await db("inventory").insert(req.body);
-    if (item) {
+    if ((item, book)) {
       res.status(200).json({ message: "Book added to shelf!" });
     } else {
       res.status(404).json(error);
