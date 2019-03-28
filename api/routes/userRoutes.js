@@ -102,8 +102,12 @@ router.get("/:userId/inventory", async (req, res) => {
 
 router.get("/:userId/inventory/:bookId", async (req, res) => {
   try {
-    const inventory = await db("books").where({ userId: req.params.userId });
-    const book = await db("books").where({ bookId: req.params.bookId });
+    const inventory = await db("books")
+      .where({ userId: req.params.userId })
+      .first();
+    const book = await db("books")
+      .where({ bookId: req.params.bookId })
+      .first();
     console.log(book);
     if (inventory && book) {
       res.status(200).json(book);
