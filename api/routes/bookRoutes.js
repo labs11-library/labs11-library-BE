@@ -54,8 +54,8 @@ router.post("/", async (req, res) => {
 
 router.get("/:bookId", async (req, res) => {
   try {
-    const item = await db("books").where({ bookId: req.params.bookId });
-    if (item) {
+    const book = await db("books").where({ bookId: req.params.bookId }).first();
+    if (book) {
       res.status(200).json(book);
     } else {
       res.status(404).json({ message: "Could not find a book with that ID." });
