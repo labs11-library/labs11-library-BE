@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
       .onUpdate("CASCADE");
     table.string("title");
     table.string("authors");
+    table.string("image");
     table.integer("ISBN");
     table.float("avgRating");
     table.text("description");
