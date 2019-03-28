@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const CheckedOut = require("../helpers/checkedOutModel");
+const passport = require("passport");
+const { authenticate } = require("../auth/authenticate");
 
 const rp = require("request-promise");
 const { parseString } = require("xml2js");
