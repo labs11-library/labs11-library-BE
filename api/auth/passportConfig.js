@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const secret = process.env.JWT_SECRET;
 
 const passport = require("passport");
-// const BearerStrategy = require("passport-http-bearer");
+const BearerStrategy = require("passport-http-bearer");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 // const CookieStrategy = require("passport-cookie");

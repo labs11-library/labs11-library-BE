@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const LocalStorage = require("node-localstorage");
 
 const SECRET = process.env.JWT_SECRET;
 
@@ -7,9 +8,8 @@ module.exports = {
 };
 
 function authenticate(req, res, next) {
-  console.log(req);
-  const token = req;
-
+  console.log(res);
+  let token = res;
   if (token) {
     jwt.verify(token, SECRET, (err, decoded) => {
       if (err) return res.status(401).json(err);

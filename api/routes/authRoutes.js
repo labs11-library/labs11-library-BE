@@ -23,6 +23,7 @@ router.get(
 // ACCESS:  Public
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   let token = req.user.token;
+  res.cookie("auth", token);
   res.redirect("http://localhost:3000?token=" + token);
 });
 
