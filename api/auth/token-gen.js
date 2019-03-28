@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
-const secret = process.env.JWT_SECRET;
+const secret = process.env.SECRET;
 
 module.exports = {
   generateToken
 };
 
-function generateToken(userId) {
+function generateToken(email) {
   const payload = {
-    subject: userId
+    subject: email
     // email: user.email
   };
 
