@@ -17,14 +17,13 @@ router.get(
 // ACCESS:  Public
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   // console.log("req.query", req.query);  
-  // let token = req.query.code;
-  res.redirect("http://localhost:3000/profile"); // http://localhost:3000?token=" + token
+  let token = req.query.code;
+  res.redirect("http://localhost:3000?token=" + token);
 });
 
-// Redirect the user to Facebook for authentication.  When complete,
-// Facebook will redirect the user back to the application at
-//     /auth/facebook/callback
-// router.get("/facebook", passport.authenticate("facebook"));
+// ROUTE:   GET auth/users/facebook
+// DESC:    Allow users to authenticate with facebook
+// ACCESS:  Public
 router.get(
   "/facebook",
   passport.authenticate("facebook", {
@@ -32,10 +31,9 @@ router.get(
   })
 );
 
-// Facebook will redirect the user to this URL after approval.  Finish the
-// authentication process by attempting to obtain an access token.  If
-// access was granted, the user will be logged in.  Otherwise,
-// authentication has failed.
+// ROUTE:   GET auth/facebook/callback
+// DESC:    Allow users to authenticate with facebook
+// ACCESS:  Public
 router.get(
   "/facebook/callback",
   passport.authenticate("facebook", {
