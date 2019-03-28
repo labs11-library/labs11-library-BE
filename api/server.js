@@ -13,26 +13,6 @@ config(server);
 server.use(passport.initialize());
 server.use(passport.session());
 
-<<<<<<< HEAD
-const sessionConfig = {
-	secret,
-	resave: false,
-	genid: function(req) {
-		return uuid();
-	},
-	saveUninitialized: true,
-	cookie: { maxAge: 24 * 1000 * 60 * 60 },
-	store: new KnexSessionStore({
-		tablename: "sessions",
-		sidfieldname: "sid",
-		knex: db,
-		clearInterval: 1000 * 60 * 60,
-		createtable: true
-	})
-};
-
-server.use(session(sessionConfig));
-=======
 // const sessionConfig = {
 //   secret,
 //   resave: false,
@@ -51,7 +31,6 @@ server.use(session(sessionConfig));
 // };
 
 // server.use(session(sessionConfig));
->>>>>>> 1c5c9576ea6227bbd15138ad6824e0eda4715d80
 
 // Routes
 
@@ -68,16 +47,16 @@ server.use("/chat", chatRoutes);
 // server.use("/payment", paymentRoutes);
 
 server.get("/", (req, res) => {
-  res.status(200).json({ api: "running" });
+	res.status(200).json({ api: "running" });
 });
 
 server.get("/users", async (req, res) => {
-  try {
-    const users = await db("users").orderBy("userId");
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: "no users displayed!" });
-  }
+	try {
+		const users = await db("users").orderBy("userId");
+		res.status(200).json(users);
+	} catch (error) {
+		res.status(500).json({ message: "no users displayed!" });
+	}
 });
 
 module.exports = server;
