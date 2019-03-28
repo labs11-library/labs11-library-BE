@@ -7,7 +7,8 @@ const createFakeUser = () => ({
   password: faker.internet.password(),
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
-  location: `${faker.address.latitude()},${faker.address.longitude()}`,
+  latitude: faker.address.latitude(),
+  longitude: faker.address.longitude(),
   picture: faker.random.image(),
   bio: faker.lorem.sentence()
 });
