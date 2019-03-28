@@ -8,7 +8,8 @@ exports.up = function(knex, Promise) {
     table.string("password");
     table.string("firstName");
     table.string("lastName");
-    table.string("location");
+    table.string("latitude");
+    table.string("longitude");
     table.string("picture");
     table.text("bio", 140);
     table.string("token");
