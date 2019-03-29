@@ -39,13 +39,14 @@ const bookRoutes = require("./routes/bookRoutes");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const emailRoutes = require("./sendgrid/Sendgrid");
-// const paymentRoutes = require("./routes/paymentRoute");
+const paymentRoutes = require("./routes/paymentRoute");
 
 server.use("/auth", auth);
 server.use("/users", userRoutes);
 server.use("/books", bookRoutes);
 server.use("/chat", chatRoutes);
 server.use("/", emailRoutes);
+server.use("/payment", paymentRoutes);
 
 server.get("/", (req, res) => {
 	res.status(200).json({ api: "running" });
