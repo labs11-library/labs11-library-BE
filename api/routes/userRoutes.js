@@ -82,6 +82,33 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
+//DELETE USER
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedUser = await db("users")
+      .where({ userId: req.params.id })
+      .first()
+      .select("firstName");
+    const deleted = await db("users")
+      .where({ userId: req.params.id })
+      .del();
+    if (deleted) {
+      return res
+        .status(200)
+        .json({ message: `Sorry to see you go, ${deletedUser.firstName}` });
+    } else {
+      res
+        .status(404)
+        .json({ error: "The user with the specified ID does not exits." });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "The user could not be deleted at this time." });
+  }
+});
+
 //GET user inventory
 
 router.get("/:userId/inventory", async (req, res) => {
@@ -121,7 +148,7 @@ router.get("/:userId/inventory/:bookId", async (req, res) => {
 
 //PUT (EDIT) user specific inventory by id
 
-router.put("/:userIdid/inventory/:bookId", async (req, res) => {
+router.put("/:userId/inventory/:bookId", async (req, res) => {
   try {
     const book = await db("books")
       .where({ bookId: req.params.bookId })
@@ -166,13 +193,44 @@ router.post("/:userId/inventory", async (req, res) => {
   }
 });
 
+//DELETE Inventory Item
+
+router.delete("/:userIdid/inventory/:bookId", async (req, res) => {
+  try {
+    const deletedBook = await db("books")
+      .where({ bookId: req.params.bookId })
+      .first()
+      .del();
+    if (deletedBook) {
+      res.status(200).json({ message: "Item removed from inventory." });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 //--------CHECKEDOUT
 
 //GET user checkedOut
 
-router.get("/:userId/checkedOut", async (req, res) => {
+// router.get("/:userId/checkedOut", async (req, res) => {
+//   try {
+//     const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
+//     if (checkedOut) {
+//       res.status(200).json(checkedOut);
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
+
+router.get("/:id/checkedOut", async (req, res) => {
   try {
-    const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
+    const checkedOut = await CheckedOut.getCheckedOut(req.params.id);
     if (checkedOut) {
       res.status(200).json(checkedOut);
     } else {
@@ -187,9 +245,11 @@ router.get("/:userId/checkedOut", async (req, res) => {
 
 router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
   try {
-    const checkedOutEvent = await db("checkedOut").where({
-      checkedOutId: req.params.checkedOutId
-    });
+    const checkedOutEvent = await db("checkedOut")
+      .where({
+        checkedOutId: req.params.checkedOutId
+      })
+      .first();
     if (checkedOutEvent) {
       res.status(200).json(checkedOutEvent);
     } else {
@@ -202,12 +262,26 @@ router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
 
 //POST to checkedOut
 
+// router.post("/:userId/checkedOut", async (req, res) => {
+//   try {
+//     // const checkedOut = await Inventory.getInventory(req.params.id);
+//     const item = await db("checkedOut").insert(req.body);
+//     if (item) {
+//       res.status(200).json({ message: "Book checked out!" });
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
+
 router.post("/:userId/checkedOut", async (req, res) => {
   try {
     // const checkedOut = await Inventory.getInventory(req.params.id);
     const item = await db("checkedOut").insert({
       ...req.body,
-      userId: req.params.userId
+      borrowerId: req.params.userId
     });
     if (item) {
       res.status(200).json({ message: "Book checked out!" });
