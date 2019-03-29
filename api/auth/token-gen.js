@@ -8,7 +8,6 @@ module.exports = {
 function generateToken(email) {
   const payload = {
     subject: email
-    // email: user.email
   };
 
   const options = {

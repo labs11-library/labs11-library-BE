@@ -5,10 +5,8 @@ const jwt = require("jsonwebtoken");
 const secret = process.env.JWT_SECRET;
 
 const passport = require("passport");
-const BearerStrategy = require("passport-http-bearer");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
-// const CookieStrategy = require("passport-cookie");
 
 const generateToken = require("./token-gen");
 
@@ -45,7 +43,6 @@ passport.use(
           email: profile.emails[0].value
         })
         .first();
-      // console.log("profile", profile);
       if (existingUser) {
         let accessToken = generateToken.generateToken(existingUser.email);
         existingUser.token = accessToken;
@@ -69,25 +66,6 @@ passport.use(
     }
   )
 );
-
-// line 25
-// console.log("id", id)
-// const payload = {
-//   subject: id.userId
-// };
-
-// jwt.sign(
-//   payload,
-//   secret,
-//   { expiresIn: "1d" },
-//   (err, token) => {
-//     res.json({
-//       success: true,
-//       token
-//     });
-//   }
-// );
-// let token = token.generateToken(id);
 
 passport.use(
   new FacebookStrategy(
@@ -125,20 +103,3 @@ passport.use(
     }
   )
 );
-
-// Line 40
-// const payload = {
-//   subject: users.userId
-// };
-
-// jwt.sign(
-//   payload,
-//   secret,
-//   { expiresIn: "1d" },
-//   (err, token) => {
-//     res.json({
-//       success: true,
-//       token
-//     });
-//   }
-// );
