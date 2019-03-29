@@ -213,24 +213,9 @@ router.delete("/:userIdid/inventory/:bookId", async (req, res) => {
 
 //--------CHECKEDOUT
 
-//GET user checkedOut
-
-// router.get("/:userId/checkedOut", async (req, res) => {
-//   try {
-//     const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
-//     if (checkedOut) {
-//       res.status(200).json(checkedOut);
-//     } else {
-//       res.status(404).json(error);
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
-
-router.get("/:id/checkedOut", async (req, res) => {
+router.get("/:userId/checkedOut", async (req, res) => {
   try {
-    const checkedOut = await CheckedOut.getCheckedOut(req.params.id);
+    const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
     if (checkedOut) {
       res.status(200).json(checkedOut);
     } else {
@@ -245,11 +230,9 @@ router.get("/:id/checkedOut", async (req, res) => {
 
 router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
   try {
-    const checkedOutEvent = await db("checkedOut")
-      .where({
-        checkedOutId: req.params.checkedOutId
-      })
-      .first();
+    const checkedOutEvent = await CheckedOut.getCheckedOutById(
+      req.params.checkedOutId
+    );
     if (checkedOutEvent) {
       res.status(200).json(checkedOutEvent);
     } else {
@@ -260,25 +243,8 @@ router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
   }
 });
 
-//POST to checkedOut
-
-// router.post("/:userId/checkedOut", async (req, res) => {
-//   try {
-//     // const checkedOut = await Inventory.getInventory(req.params.id);
-//     const item = await db("checkedOut").insert(req.body);
-//     if (item) {
-//       res.status(200).json({ message: "Book checked out!" });
-//     } else {
-//       res.status(404).json(error);
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
-
 router.post("/:userId/checkedOut", async (req, res) => {
   try {
-    // const checkedOut = await Inventory.getInventory(req.params.id);
     const item = await db("checkedOut").insert({
       ...req.body,
       borrowerId: req.params.userId
