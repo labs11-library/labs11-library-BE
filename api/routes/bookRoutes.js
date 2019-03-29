@@ -40,10 +40,13 @@ router.post("/", async (req, res) => {
   try {
     const book = await db("books").insert(req.body);
     const newBookList = await db("books");
+    const newBook = await db("books")
+      .where({ title: req.body.title })
+      .first();
     if (book) {
       return res
         .status(200)
-        .json({ message: "Book successfully added", newBookList });
+        .json({ message: "Book successfully added", newBook });
     } else {
       return res.status(404).json(error);
     }

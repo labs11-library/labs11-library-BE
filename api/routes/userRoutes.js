@@ -11,7 +11,7 @@ const db = require("../../data/dbConfig");
 
 //GET all users
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await db("users").orderBy("userId");
     res.status(200).json(users);
@@ -145,9 +145,19 @@ router.put("/:userIdid/inventory/:bookId", async (req, res) => {
 router.post("/:userId/inventory", async (req, res) => {
   try {
     // const inventory = await Inventory.getInventory(req.params.id);
-    const item = await db("inventory").insert(req.body);
+    // const book = await db("books").insert(req.body);
+    const item = await db("books").insert({
+      ...req.body,
+      userId: req.params.userId
+    });
+    const newBook = await db("books")
+      .where({
+        title: req.body.title,
+        userId: req.params.userId
+      })
+      .first();
     if (item) {
-      res.status(200).json({ message: "Book added to shelf!" });
+      res.status(200).json({ message: "Book added to shelf!", newBook });
     } else {
       res.status(404).json(error);
     }
@@ -195,7 +205,10 @@ router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
 router.post("/:userId/checkedOut", async (req, res) => {
   try {
     // const checkedOut = await Inventory.getInventory(req.params.id);
-    const item = await db("checkedOut").insert(req.body);
+    const item = await db("checkedOut").insert({
+      ...req.body,
+      userId: req.params.userId
+    });
     if (item) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
