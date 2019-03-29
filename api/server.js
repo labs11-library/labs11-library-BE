@@ -46,7 +46,6 @@ server.use("/users", userRoutes);
 server.use("/books", bookRoutes);
 server.use("/chat", chatRoutes);
 server.use("/", emailRoutes);
-// server.use("/payment", paymentRoutes);
 
 server.get("/", (req, res) => {
 	res.status(200).json({ api: "running" });
