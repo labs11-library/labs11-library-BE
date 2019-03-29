@@ -150,8 +150,14 @@ router.post("/:userId/inventory", async (req, res) => {
       ...req.body,
       userId: req.params.userId
     });
+    const newBook = await db("books")
+      .where({
+        title: req.body.title,
+        userId: req.params.userId
+      })
+      .first();
     if (item) {
-      res.status(200).json({ message: "Book added to shelf!" });
+      res.status(200).json({ message: "Book added to shelf!", newBook });
     } else {
       res.status(404).json(error);
     }
