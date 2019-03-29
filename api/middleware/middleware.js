@@ -29,18 +29,18 @@ const cookieSession = require("cookie-session");
 // };
 
 module.exports = server => {
-  server.use(helmet());
-  server.use(express.json());
-  server.use(morgan("dev"));
-  server.use(
-    cors({
-      credentials: true,
-      origin: ["http://localhost:3000", "https://bookmaps.netlify.com"],
-      AccessControlAllowOrigin: [
-        "http://localhost:9001",
-        "https://book-maps.heroku.com"
-      ],
-      AccessControlAllowHeaders: "Authorization"
-    })
-  );
+	server.use(helmet());
+	server.use(express.json());
+	server.use(morgan("dev"));
+	server.use(
+		cors({
+			credentials: true,
+			origin: ["http://localhost:3000", "https://bookmaps.netlify.com"],
+			AccessControlAllowOrigin: [
+				"http://localhost:9001",
+				"https://book-maps.heroku.com"
+			],
+			AccessControlAllowHeaders: "Authorization"
+		})
+	);
 };

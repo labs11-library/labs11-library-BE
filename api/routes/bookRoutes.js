@@ -57,7 +57,9 @@ router.post("/", async (req, res) => {
 
 router.get("/:bookId", async (req, res) => {
   try {
-    const book = await db("books").where({ bookId: req.params.bookId }).first();
+    const book = await db("books")
+      .where({ bookId: req.params.bookId })
+      .first();
     if (book) {
       res.status(200).json(book);
     } else {
