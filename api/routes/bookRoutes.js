@@ -5,7 +5,7 @@ const router = express.Router();
 const rp = require("request-promise");
 const { parseString } = require("xml2js");
 
-router.get("/search", (req, res) => {
+router.post("/search", (req, res) => {
   rp.get(
     `https://www.goodreads.com/search/index.xml?key=${
       process.env.GOODREADS_KEY
@@ -40,10 +40,13 @@ router.post("/", async (req, res) => {
   try {
     const book = await db("books").insert(req.body);
     const newBookList = await db("books");
+    const newBook = await db("books")
+      .where({ title: req.body.title })
+      .first();
     if (book) {
       return res
         .status(200)
-        .json({ message: "Book successfully added", newBookList });
+        .json({ message: "Book successfully added", newBook });
     } else {
       return res.status(404).json(error);
     }
@@ -52,16 +55,18 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get('/:bookId', async (req, res) => {
+router.get("/:bookId", async (req, res) => {
   try {
-    const item = await db('books').where({ bookId: req.params.bookId });
+    const item = await db("books").where({ bookId: req.params.bookId });
     if (item) {
       res.status(200).json(book);
     } else {
-      res.status(404).json({ message: "Could not find a book with that ID."})
+      res.status(404).json({ message: "Could not find a book with that ID." });
     }
   } catch (error) {
-    res.status(500).json({ message: "Could not retrieve the book at this time."})
+    res
+      .status(500)
+      .json({ message: "Could not retrieve the book at this time." });
   }
 });
 

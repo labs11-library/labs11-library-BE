@@ -51,9 +51,7 @@ passport.use(
         existingUser.token = accessToken;
         done(null, existingUser);
       } else {
-        let accessToken = generateToken.generateToken(
-          profile.profile.emails[0].value
-        );
+        let accessToken = generateToken.generateToken(profile.emails[0].value);
         await db("users").insert({
           googleId: profile.id,
           firstName: profile.name.givenName,
@@ -63,7 +61,7 @@ passport.use(
           token: accessToken
         });
         const user = await db("users")
-          .where({ googleId: profile.userId })
+          .where({ email: profile.emails[0].value })
           .first();
 
         done(null, user);
