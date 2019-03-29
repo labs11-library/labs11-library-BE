@@ -15,7 +15,7 @@ const createFakeUser = () => ({
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   let fakeUsers = [];
-  for (let i = 1; i <= 500; i++) {
+  for (let i = 1; i <= 90; i++) {
     fakeUsers.push(createFakeUser());
   }
   return knex("users")
@@ -25,17 +25,3 @@ exports.seed = function(knex, Promise) {
       return knex("users").insert(fakeUsers);
     });
 };
-
-// {
-// 	userId: 1,
-// 	googleId: null,
-// 	facebookId: "test",
-// 	goodreadsId: "test",
-// 	email: "test@test.com",
-// 	password: "test",
-// 	firstName: "test",
-// 	lastName: "test",
-// 	location: "test",
-// 	picture: "test",
-// 	bio: "test"
-// }
