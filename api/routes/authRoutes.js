@@ -5,7 +5,7 @@ const passport = require("passport");
 router.get("/logout", (req, res) => {
   req.logout();
   req.session.destroy;
-  res.redirect("http://localhost:3000"); //https://bookmaps.netlify.com/
+  res.redirect("https://bookmaps.netlify.com/"); //https://bookmaps.netlify.com/
 });
 
 // ROUTE:   GET auth/users/google
@@ -26,7 +26,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   let userId = req.user.userId;
   let token = req.user.token;
   res.cookie("auth", token);
-  res.redirect(`http://localhost:3000?token=${token}&userId=${userId}`); //https://bookmaps.netlify.com/
+  res.redirect(`https://bookmaps.netlify.com?token=${token}&userId=${userId}`); //https://bookmaps.netlify.com/
 });
 
 // router.get(
