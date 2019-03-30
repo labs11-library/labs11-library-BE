@@ -1,4 +1,5 @@
 exports.up = function(knex, Promise) {
+  let date = new Date();
   return knex.schema.createTable("checkedOut", table => {
     table.increments("checkedOutId");
     table
@@ -22,8 +23,8 @@ exports.up = function(knex, Promise) {
       .inTable("books")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
-    table.date("checkoutDate");
-    table.date("dueDate");
+    table.timestamp("checkoutDate").defaultTo(knex.fn.now());
+    table.time("dueDate");
     table.boolean("returned");
   });
 };
