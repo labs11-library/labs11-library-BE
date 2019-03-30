@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const CheckedOut = require("../helpers/checkedOutModel");
-const passport = require("passport");
+const Reviews = require("../helpers/reviewsModel");
 const { authenticate } = require("../auth/authenticate");
-
-const rp = require("request-promise");
-const { parseString } = require("xml2js");
 
 const db = require("../../data/dbConfig");
 
@@ -251,6 +248,56 @@ router.post("/:userId/checkedOut", async (req, res) => {
     });
     if (item) {
       res.status(200).json({ message: "Book checked out!" });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//----------REVIEWS
+
+//GET User's Reviews
+
+router.get("/:userId/reviews", async (req, res) => {
+  try {
+    const reviewList = await Reviews.getReviewList(req.params.userId);
+    if (reviewList) {
+      res.status(200).json(reviewList);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//GET specific review by review Id
+
+router.get("/:userId/reviews/:reviewId", async (req, res) => {
+  try {
+    const reviewEvent = await Reviews.getReviewList(
+      req.params.reviewId
+    ).first();
+    if (reviewEvent) {
+      res.status(200).json(reviewEvent);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//POST a review
+
+router.post("/reviews", async (req, res) => {
+  try {
+    const review = await db("reviews").insert(req.body);
+    console.log(review);
+    if (review) {
+      res.status(200).json({ message: "Review added." });
     } else {
       res.status(404).json(error);
     }

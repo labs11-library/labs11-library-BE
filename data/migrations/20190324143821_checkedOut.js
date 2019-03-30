@@ -24,6 +24,7 @@ exports.up = function(knex, Promise) {
       .onUpdate("CASCADE");
     table.date("checkoutDate");
     table.date("dueDate");
+    table.boolean("returned");
   });
 };
 
