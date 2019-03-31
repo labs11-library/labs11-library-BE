@@ -12,6 +12,7 @@ function getAllBooks() {
   const books = db("books")
     .join("users as lenders", "books.userId", "lenders.userId")
     .select(
+      "books.bookId as bookId",
       "lenders.firstName as lender",
       "lenders.userId as lenderId",
       "lenders.latitude as latitude",
@@ -37,6 +38,7 @@ function getBookById(bookId) {
       "lenders.userId as lenderId",
       "lenders.latitude as latitude",
       "lenders.latitude as longitude",
+      "books.bookId as bookId",
       "books.title",
       "books.authors",
       "books.image",
