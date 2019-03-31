@@ -245,7 +245,7 @@ router.post("/:userId/checkedOut", async (req, res) => {
     const checkedOutBook = await db("books").update({ available: false });
     const item = await db("checkedOut").insert({
       ...req.body,
-      borrowerId: req.params.userId
+      lenderId: req.params.userId
     });
     if (item && checkedOutBook) {
       res.status(200).json({ message: "Book checked out!" });
