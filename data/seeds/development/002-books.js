@@ -9,7 +9,7 @@ exports.seed = function(knex, Promise) {
           userId: 1,
           title: "Siddhartha",
           authors: "Hermann Hesse",
-          image: "thisImageWillBeProvidedByGoodreadsAPI.com",
+          image: "https://images.gr-assets.com/books/1428715580l/52036.jpg",
           description: "Used but good condition",
           avgRating: 4.5,
           ISBN: 1837499200
@@ -18,7 +18,7 @@ exports.seed = function(knex, Promise) {
           userId: 2,
           title: "1984",
           authors: "George Orwell",
-          image: "thisImageWillBeProvidedByGoodreadsAPI.com",
+          image: "https://images.gr-assets.com/books/1532714506l/40961427.jpg",
           description: "Excellent",
           avgRating: 4.8,
           ISBN: 99103294872
