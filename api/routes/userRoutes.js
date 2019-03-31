@@ -242,11 +242,12 @@ router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
 
 router.post("/:userId/checkedOut", async (req, res) => {
   try {
+    const checkedOutBook = await db("books").update({ available: false });
     const item = await db("checkedOut").insert({
       ...req.body,
       borrowerId: req.params.userId
     });
-    if (item) {
+    if (item && checkedOutBook) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
       res.status(404).json(error);
