@@ -27,6 +27,8 @@ router.post("/search", (req, res) => {
   );
 });
 
+// GET all books
+
 router.get("/", async (req, res) => {
   try {
     const books = await db("books").orderBy("bookId");
@@ -35,6 +37,8 @@ router.get("/", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+// POST book
 
 router.post("/", async (req, res) => {
   try {
@@ -55,6 +59,8 @@ router.post("/", async (req, res) => {
   }
 });
 
+//GET Book by ID
+
 router.get("/:bookId", async (req, res) => {
   try {
     const book = await db("books")
@@ -69,6 +75,26 @@ router.get("/:bookId", async (req, res) => {
     res
       .status(500)
       .json({ message: "Could not retrieve the book at this time." });
+  }
+});
+
+// PUT (edit) Book
+
+router.put("/:bookId", async (req, res) => {
+  try {
+    const book = await db("books")
+      .where({ bookId: req.params.bookId })
+      .update(req.body);
+    const editedBook = await db("books")
+      .where({ bookId: req.params.id })
+      .first();
+    if (book && editedBook) {
+      return res.status(200).json({ message: "Book edited!", editedBook });
+    } else {
+      return res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 });
 
