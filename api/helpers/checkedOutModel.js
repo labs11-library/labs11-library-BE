@@ -26,6 +26,7 @@ function getCheckedOut(userId) {
       "books.title",
       "books.authors",
       "books.description",
+      "books.image",
       "checkedOut.checkedOutId",
       "checkedOut.checkoutDate",
       "checkedOut.dueDate",
