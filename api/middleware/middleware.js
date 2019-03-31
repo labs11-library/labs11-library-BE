@@ -14,7 +14,7 @@ module.exports = server => {
       origin: ["http://localhost:3000", "https://bookmaps.netlify.com"],
       AccessControlAllowOrigin: [
         "http://localhost:9001",
-        "https://book-maps.heroku.com"
+        "https://book-maps.herokuapps.com"
       ],
       AccessControlAllowHeaders: "Authorization"
     })
