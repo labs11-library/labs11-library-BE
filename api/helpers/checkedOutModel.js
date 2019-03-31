@@ -56,6 +56,7 @@ function getCheckedOutById(checkedOutId) {
       "checkedOut.checkedOutId",
       "checkedOut.checkoutDate",
       "checkedOut.dueDate",
+      "checkedOut.returned",
       "checkedOut.lenderId as lenderId",
       "lenders.firstName as lender"
     )
