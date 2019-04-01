@@ -102,7 +102,7 @@ function getBookById(bookId) {
       "books.title",
       "books.authors",
       "books.image",
-      "books.isbn",
+      "books.ISBN",
       "books.avgRating",
       "books.description",
       "books.available",
