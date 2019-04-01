@@ -70,7 +70,7 @@ function getCheckedOutById(checkedOutId) {
 
 function getAllBooks() {
   const books = db("books")
-    // .join("users as lenders", "books.userId", "lenders.userId")
+    .join("users as lenders", "books.userId", "lenders.userId")
     .select(
       "books.bookId as bookId",
       "lenders.firstName as lender",
