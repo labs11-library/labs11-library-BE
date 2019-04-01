@@ -119,9 +119,8 @@ router.get("/:userId/inventory", async (req, res) => {
     const loanedInventory = await db("checkedOut").where({
       lenderId: req.params.userId
     });
-    console.log(inventory, loanedInventory);
     if (inventory) {
-      res.status(200).json(inventory);
+      res.status(200).json(inventory + loanedInventory);
     } else {
       res.status(404).json(error);
     }
