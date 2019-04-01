@@ -191,7 +191,7 @@ router.post("/:userId/inventory", async (req, res) => {
 
 //DELETE Inventory Item
 
-router.delete("/:userIdid/inventory/:bookId", async (req, res) => {
+router.delete("/:userId/inventory/:bookId", async (req, res) => {
   try {
     const deletedBook = await db("books")
       .where({ bookId: req.params.bookId })
