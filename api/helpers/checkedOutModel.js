@@ -41,7 +41,7 @@ function getCheckedOut(userId) {
 
   return items;
 }
-
+//pls work
 function getCheckedOutById(checkedOutId) {
   const items = db("checkedOut")
     .join("users as borrowers", "checkedOut.borrowerId", "borrowers.userId")
@@ -80,7 +80,7 @@ function getAllBooks() {
       "books.title",
       "books.authors",
       "books.image",
-      "books.isbn",
+      "books.ISBN",
       "books.avgRating",
       "books.description",
       "books.available",
