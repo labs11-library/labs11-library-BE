@@ -26,6 +26,7 @@ function getCheckedOut(userId) {
       "books.title",
       "books.authors",
       "books.description",
+      "books.image",
       "checkedOut.checkedOutId",
       "checkedOut.checkoutDate",
       "checkedOut.dueDate",
@@ -51,9 +52,11 @@ function getCheckedOutById(checkedOutId) {
       "books.title",
       "books.authors",
       "books.description",
+      "books.image",
       "checkedOut.checkedOutId",
       "checkedOut.checkoutDate",
       "checkedOut.dueDate",
+      "checkedOut.returned",
       "checkedOut.lenderId as lenderId",
       "lenders.firstName as lender"
     )

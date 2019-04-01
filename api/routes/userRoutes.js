@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const CheckedOut = require("../helpers/checkedOutModel");
 const Reviews = require("../helpers/reviewsModel");
+const Books = require("../helpers/bookModel");
 const { authenticate } = require("../auth/authenticate");
 
 const db = require("../../data/dbConfig");
@@ -129,9 +130,7 @@ router.get("/:userId/inventory/:bookId", async (req, res) => {
     const inventory = await db("books")
       .where({ userId: req.params.userId })
       .first();
-    const book = await db("books")
-      .where({ bookId: req.params.bookId })
-      .first();
+    const book = await Books.getBookById(req.params.bookId).first();
     console.log(book);
     if (inventory && book) {
       res.status(200).json(book);
@@ -242,11 +241,12 @@ router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
 
 router.post("/:userId/checkedOut", async (req, res) => {
   try {
+    const checkedOutBook = await db("books").update({ available: false });
     const item = await db("checkedOut").insert({
       ...req.body,
-      borrowerId: req.params.userId
+      lenderId: req.params.userId
     });
-    if (item) {
+    if (item && checkedOutBook) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
       res.status(404).json(error);
