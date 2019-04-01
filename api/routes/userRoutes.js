@@ -120,7 +120,7 @@ router.get("/:userId/inventory", async (req, res) => {
       lenderId: req.params.userId
     });
     if (inventory) {
-      res.status(200).json(inventory, loanedInventory);
+      res.status(200).json(inventory.concat(loanedInventory));
     } else {
       res.status(404).json(error);
     }
