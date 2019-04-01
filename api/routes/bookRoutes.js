@@ -1,7 +1,8 @@
 const express = require("express");
 const db = require("../../data/dbConfig");
 const router = express.Router();
-const Books = require("../helpers/bookModel");
+// const Books = require("../helpers/bookModel");
+const CheckedOut = require("../helpers/checkedOutModel");
 
 const rp = require("request-promise");
 const { parseString } = require("xml2js");
@@ -32,7 +33,7 @@ router.post("/search", (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const books = await Books.getAllBooks().orderBy("bookId");
+    const books = await CheckedOut.getAllBooks().orderBy("bookId");
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json(error);
@@ -64,7 +65,7 @@ router.post("/", async (req, res) => {
 
 router.get("/:bookId", async (req, res) => {
   try {
-    const book = await Books.getBookById(req.params.bookId).first();
+    const book = await CheckedOut.getBookById(req.params.bookId).first();
     if (book) {
       res.status(200).json(book);
     } else {
