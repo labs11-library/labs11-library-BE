@@ -10,13 +10,13 @@ module.exports = {
 
 function getAllBooks() {
   const books = db("books")
-    .join("users as lenders", "books.userId", "lenders.userId")
+    // .join("users as lenders", "books.userId", "lenders.userId")
     .select(
       "books.bookId as bookId",
-      "lenders.firstName as lender",
-      "lenders.userId as lenderId",
-      "lenders.latitude as latitude",
-      "lenders.latitude as longitude",
+      // "lenders.firstName as lender",
+      // "lenders.userId as lenderId",
+      // "lenders.latitude as latitude",
+      // "lenders.latitude as longitude",
       "books.title",
       "books.authors",
       "books.image",
