@@ -112,8 +112,14 @@ router.delete("/:id", async (req, res) => {
 
 router.get("/:userId/inventory", async (req, res) => {
   try {
-    const inventory = await db("books").where({ userId: req.params.userId });
-    console.log(inventory);
+    const inventory = await db("books").where({
+      userId: req.params.userId,
+      available: true
+    });
+    const loanedInventory = await db("checkedOut").where({
+      lenderId: req.params.userId
+    });
+    console.log(inventory, loanedInventory);
     if (inventory) {
       res.status(200).json(inventory);
     } else {
