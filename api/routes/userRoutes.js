@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const CheckedOut = require("../helpers/checkedOutModel");
-const passport = require("passport");
+const Reviews = require("../helpers/reviewsModel");
+const Books = require("../helpers/bookModel");
 const { authenticate } = require("../auth/authenticate");
-
-const rp = require("request-promise");
-const { parseString } = require("xml2js");
 
 const db = require("../../data/dbConfig");
 
@@ -132,9 +130,7 @@ router.get("/:userId/inventory/:bookId", async (req, res) => {
     const inventory = await db("books")
       .where({ userId: req.params.userId })
       .first();
-    const book = await db("books")
-      .where({ bookId: req.params.bookId })
-      .first();
+    const book = await Books.getBookById(req.params.bookId).first();
     console.log(book);
     if (inventory && book) {
       res.status(200).json(book);
@@ -213,24 +209,9 @@ router.delete("/:userIdid/inventory/:bookId", async (req, res) => {
 
 //--------CHECKEDOUT
 
-//GET user checkedOut
-
-// router.get("/:userId/checkedOut", async (req, res) => {
-//   try {
-//     const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
-//     if (checkedOut) {
-//       res.status(200).json(checkedOut);
-//     } else {
-//       res.status(404).json(error);
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
-
-router.get("/:id/checkedOut", async (req, res) => {
+router.get("/:userId/checkedOut", async (req, res) => {
   try {
-    const checkedOut = await CheckedOut.getCheckedOut(req.params.id);
+    const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
     if (checkedOut) {
       res.status(200).json(checkedOut);
     } else {
@@ -245,11 +226,9 @@ router.get("/:id/checkedOut", async (req, res) => {
 
 router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
   try {
-    const checkedOutEvent = await db("checkedOut")
-      .where({
-        checkedOutId: req.params.checkedOutId
-      })
-      .first();
+    const checkedOutEvent = await CheckedOut.getCheckedOutById(
+      req.params.checkedOutId
+    );
     if (checkedOutEvent) {
       res.status(200).json(checkedOutEvent);
     } else {
@@ -260,31 +239,65 @@ router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
   }
 });
 
-//POST to checkedOut
-
-// router.post("/:userId/checkedOut", async (req, res) => {
-//   try {
-//     // const checkedOut = await Inventory.getInventory(req.params.id);
-//     const item = await db("checkedOut").insert(req.body);
-//     if (item) {
-//       res.status(200).json({ message: "Book checked out!" });
-//     } else {
-//       res.status(404).json(error);
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
-
 router.post("/:userId/checkedOut", async (req, res) => {
   try {
-    // const checkedOut = await Inventory.getInventory(req.params.id);
+    const checkedOutBook = await db("books").update({ available: false });
     const item = await db("checkedOut").insert({
       ...req.body,
-      borrowerId: req.params.userId
+      lenderId: req.params.userId
     });
-    if (item) {
+    if (item && checkedOutBook) {
       res.status(200).json({ message: "Book checked out!" });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//----------REVIEWS
+
+//GET User's Reviews
+
+router.get("/:userId/reviews", async (req, res) => {
+  try {
+    const reviewList = await Reviews.getReviewList(req.params.userId);
+    if (reviewList) {
+      res.status(200).json(reviewList);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//GET specific review by review Id
+
+router.get("/:userId/reviews/:reviewId", async (req, res) => {
+  try {
+    const reviewEvent = await Reviews.getReviewList(
+      req.params.reviewId
+    ).first();
+    if (reviewEvent) {
+      res.status(200).json(reviewEvent);
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//POST a review
+
+router.post("/reviews", async (req, res) => {
+  try {
+    const review = await db("reviews").insert(req.body);
+    console.log(review);
+    if (review) {
+      res.status(200).json({ message: "Review added." });
     } else {
       res.status(404).json(error);
     }
