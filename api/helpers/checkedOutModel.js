@@ -41,7 +41,7 @@ function getCheckedOut(userId) {
 
   return items;
 }
-
+//pls work
 function getCheckedOutById(checkedOutId) {
   const items = db("checkedOut")
     .join("users as borrowers", "checkedOut.borrowerId", "borrowers.userId")
