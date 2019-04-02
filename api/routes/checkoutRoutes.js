@@ -38,9 +38,6 @@ router.get("/:userId/checkout/:checkoutId", async (req, res) => {
 
 router.post("/:userId/checkout", async (req, res) => {
   try {
-    // const checkoutBook = await db("books")
-    //   .where({ bookId: req.body.bookId })
-    //   .update({ available: false });
     const item = await db("checkout").insert(req.body);
     if (item) {
       res.status(200).json({ message: "Book checked out!" });
