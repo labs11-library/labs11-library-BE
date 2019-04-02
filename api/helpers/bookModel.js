@@ -14,7 +14,7 @@ function getAllBooks() {
     .select(
       "books.bookId as bookId",
       "lenders.firstName as lender",
-      "lenders.userId",
+      "lenders.userId as lenderId",
       "lenders.latitude as latitude",
       "lenders.latitude as longitude",
       "books.title",
