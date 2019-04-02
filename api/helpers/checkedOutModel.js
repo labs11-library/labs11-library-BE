@@ -1,7 +1,7 @@
 const knex = require("knex");
 const knexConfig = require("../../knexfile");
 
-const db = knex(knexConfig.production);
+const db = knex(knexConfig.development);
 
 module.exports = {
   getCheckedOut,
@@ -33,7 +33,7 @@ function getCheckedOut(userId) {
       "checkedOut.checkoutDate",
       "checkedOut.dueDate",
       "checkedOut.returned",
-      "checkedOut.lenderId as lenderId",
+      "checkedOut.lenderId",
       "lenders.firstName as lender"
     )
     .where("borrowers.userId", userId)
