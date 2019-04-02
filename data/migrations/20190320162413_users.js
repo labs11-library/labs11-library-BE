@@ -13,6 +13,7 @@ exports.up = function(knex, Promise) {
     table.string("picture");
     table.text("bio", 140);
     table.string("token");
+    table.string("stripeToken");
   });
 };
 
