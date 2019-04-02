@@ -15,12 +15,16 @@ server.use(passport.session());
 const auth = require("./routes/authRoutes");
 const bookRoutes = require("./routes/bookRoutes");
 const userRoutes = require("./routes/userRoutes");
+const inventoryRoutes = require("./routes/inventoryRoutes");
+const checkoutRequestRoutes = require("./routes/checkoutRequestRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const emailRoutes = require("./sendgrid/Sendgrid");
 // const paymentRoutes = require("./routes/paymentRoute");
 
 server.use("/auth", auth);
 server.use("/users", userRoutes);
+server.use("/users", inventoryRoutes);
+server.use("/users", checkoutRequestRoutes);
 server.use("/books", bookRoutes);
 server.use("/chat", chatRoutes);
 server.use("/", emailRoutes);
