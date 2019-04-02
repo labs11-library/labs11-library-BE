@@ -344,12 +344,12 @@ If successful, you will be returned an object with all the specific checkedOut i
 
 URL: /users/userId/checkedOut
 
-A POST must be sent with the `bookId` and `lenderId`. The backend will get the `borrowerId` from the `req.params.userId`. If successful, you will get a success message. Here is an example POST to /users/3/checkedOut:
+A POST must be sent with the `bookId` and `borrowerId`. The backend will get the `lenderId` from the `req.params.userId`, as the lender will be clicking the `confirmed loaned out` button on their dashboard when they've handed off the book. If successful, you will get a success message. Here is an example POST to /users/3/checkedOut:
 
 ```
 {
     "bookId": 2,
-    "lenderId": 1
+    "borrowerId": 1
 }
 ```
 Will return: 
