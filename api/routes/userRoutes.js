@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const CheckedOut = require("../helpers/checkedOutModel");
+// const CheckedOut = require("../helpers/checkedOutModel");
+const Books = require("../helpers/bookModel");
 const Reviews = require("../helpers/reviewsModel");
 // const Books = require("../helpers/bookModel");
 
@@ -108,155 +109,54 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-//GET user inventory
-
-router.get("/:userId/inventory", async (req, res) => {
-  try {
-    const inventory = await db("books").where({
-      userId: req.params.userId
-    });
-    if (inventory) {
-      res.status(200).json(inventory);
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-//GET user specific inventory by id
-
-router.get("/:userId/inventory/:bookId", async (req, res) => {
-  try {
-    const inventory = await db("books")
-      .where({ userId: req.params.userId })
-      .first();
-    const book = await CheckedOut.getBookById(req.params.bookId).first();
-    console.log(book);
-    if (inventory && book) {
-      res.status(200).json(book);
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-//PUT (EDIT) user specific inventory by id
-
-router.put("/:userId/inventory/:bookId", async (req, res) => {
-  try {
-    const book = await db("books")
-      .where({ bookId: req.params.bookId })
-      .first()
-      .update(req.body);
-    const editedBook = await db("books")
-      .where({ bookId: req.params.bookId })
-      .first();
-    if (editedBook) {
-      res.status(200).json({ message: "Book edited!", editedBook });
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-//POST to inventory
-
-router.post("/:userId/inventory", async (req, res) => {
-  try {
-    // const inventory = await Inventory.getInventory(req.params.id);
-    // const book = await db("books").insert(req.body);
-    const item = await db("books").insert({
-      ...req.body,
-      userId: req.params.userId
-    });
-    const newBook = await db("books")
-      .where({
-        title: req.body.title,
-        userId: req.params.userId
-      })
-      .first();
-    if (item) {
-      res.status(200).json({ message: "Book added to shelf!", newBook });
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-//DELETE Inventory Item
-
-router.delete("/:userId/inventory/:bookId", async (req, res) => {
-  try {
-    const deletedBook = await db("books")
-      .where({ bookId: req.params.bookId })
-      .first()
-      .del();
-    if (deletedBook) {
-      res.status(200).json({ message: "Item removed from inventory." });
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
 //--------CHECKEDOUT
 
-router.get("/:userId/checkedOut", async (req, res) => {
-  try {
-    const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
-    if (checkedOut) {
-      res.status(200).json(checkedOut);
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+// router.get("/:userId/checkedOut", async (req, res) => {
+//   try {
+//     const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
+//     if (checkedOut) {
+//       res.status(200).json(checkedOut);
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
-//GET specific user checkedOut event by ID
+// //GET specific user checkedOut event by ID
 
-router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
-  try {
-    const checkedOutEvent = await CheckedOut.getCheckedOutById(
-      req.params.checkedOutId
-    );
-    if (checkedOutEvent) {
-      res.status(200).json(checkedOutEvent);
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+// router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
+//   try {
+//     const checkedOutEvent = await CheckedOut.getCheckedOutById(
+//       req.params.checkedOutId
+//     );
+//     if (checkedOutEvent) {
+//       res.status(200).json(checkedOutEvent);
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
-router.post("/:userId/checkedOut", async (req, res) => {
-  try {
-    const checkedOutBook = await db("books").update({ available: false });
-    const item = await db("checkedOut").insert({
-      ...req.body,
-      lenderId: req.params.userId
-    });
-    if (item && checkedOutBook) {
-      res.status(200).json({ message: "Book checked out!" });
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+// router.post("/:userId/checkedOut", async (req, res) => {
+//   try {
+//     const checkedOutBook = await db("books").update({ available: false });
+//     const item = await db("checkedOut").insert({
+//       ...req.body,
+//       lenderId: req.params.userId
+//     });
+//     if (item && checkedOutBook) {
+//       res.status(200).json({ message: "Book checked out!" });
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
 //----------REVIEWS
 
