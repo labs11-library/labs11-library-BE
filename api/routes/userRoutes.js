@@ -111,52 +111,52 @@ router.delete("/:id", async (req, res) => {
 
 //--------CHECKEDOUT
 
-router.get("/:userId/checkedOut", async (req, res) => {
-  try {
-    const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
-    if (checkedOut) {
-      res.status(200).json(checkedOut);
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+// router.get("/:userId/checkedOut", async (req, res) => {
+//   try {
+//     const checkedOut = await CheckedOut.getCheckedOut(req.params.userId);
+//     if (checkedOut) {
+//       res.status(200).json(checkedOut);
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
-//GET specific user checkedOut event by ID
+// //GET specific user checkedOut event by ID
 
-router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
-  try {
-    const checkedOutEvent = await CheckedOut.getCheckedOutById(
-      req.params.checkedOutId
-    );
-    if (checkedOutEvent) {
-      res.status(200).json(checkedOutEvent);
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+// router.get("/:userId/checkedOut/:checkedOutId", async (req, res) => {
+//   try {
+//     const checkedOutEvent = await CheckedOut.getCheckedOutById(
+//       req.params.checkedOutId
+//     );
+//     if (checkedOutEvent) {
+//       res.status(200).json(checkedOutEvent);
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
-router.post("/:userId/checkedOut", async (req, res) => {
-  try {
-    const checkedOutBook = await db("books").update({ available: false });
-    const item = await db("checkedOut").insert({
-      ...req.body,
-      lenderId: req.params.userId
-    });
-    if (item && checkedOutBook) {
-      res.status(200).json({ message: "Book checked out!" });
-    } else {
-      res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+// router.post("/:userId/checkedOut", async (req, res) => {
+//   try {
+//     const checkedOutBook = await db("books").update({ available: false });
+//     const item = await db("checkedOut").insert({
+//       ...req.body,
+//       lenderId: req.params.userId
+//     });
+//     if (item && checkedOutBook) {
+//       res.status(200).json({ message: "Book checked out!" });
+//     } else {
+//       res.status(404).json(error);
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
 //----------REVIEWS
 
