@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const CheckedOut = require("../helpers/checkedOutModel");
 const Reviews = require("../helpers/reviewsModel");
-const Books = require("../helpers/bookModel");
+// const Books = require("../helpers/bookModel");
+
 const { authenticate } = require("../auth/authenticate");
 
 const db = require("../../data/dbConfig");
@@ -111,8 +112,9 @@ router.delete("/:id", async (req, res) => {
 
 router.get("/:userId/inventory", async (req, res) => {
   try {
-    const inventory = await db("books").where({ userId: req.params.userId });
-    console.log(inventory);
+    const inventory = await db("books").where({
+      userId: req.params.userId
+    });
     if (inventory) {
       res.status(200).json(inventory);
     } else {
@@ -130,7 +132,7 @@ router.get("/:userId/inventory/:bookId", async (req, res) => {
     const inventory = await db("books")
       .where({ userId: req.params.userId })
       .first();
-    const book = await Books.getBookById(req.params.bookId).first();
+    const book = await CheckedOut.getBookById(req.params.bookId).first();
     console.log(book);
     if (inventory && book) {
       res.status(200).json(book);
@@ -191,7 +193,7 @@ router.post("/:userId/inventory", async (req, res) => {
 
 //DELETE Inventory Item
 
-router.delete("/:userIdid/inventory/:bookId", async (req, res) => {
+router.delete("/:userId/inventory/:bookId", async (req, res) => {
   try {
     const deletedBook = await db("books")
       .where({ bookId: req.params.bookId })
