@@ -9,9 +9,9 @@ module.exports = {
 
 function getReviewList(userId) {
   const items = db("reviews")
-    .join("checkedOut", "reviews.reviewEvent", "checkedOut.checkedOutId")
-    .join("users as borrowers", "checkedOut.borrowerId", "borrowers.userId")
-    .join("users as lenders", "checkedOut.lenderId", "lenders.userId")
+    .join("checkout", "reviews.reviewEvent", "checkout.checkoutId")
+    .join("users as borrowers", "checkout.borrowerId", "borrowers.userId")
+    .join("users as lenders", "checkout.lenderId", "lenders.userId")
     .select(
       "reviews.reviewId",
       "reviews.rating",
