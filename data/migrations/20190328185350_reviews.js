@@ -6,8 +6,8 @@ exports.up = function(knex, Promise) {
     table
       .integer("reviewEvent")
       .unsigned()
-      .references("checkedOutId")
-      .inTable("checkedOut")
+      .references("checkoutId")
+      .inTable("checkout")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
   });
