@@ -37,6 +37,23 @@ router.get("/:userId/checkout/:checkoutId", async (req, res) => {
   }
 });
 
+//PUT specific user checkedOut event by ID - used for return
+
+router.put("/:userId/checkout/:checkoutId", async (req, res) => {
+  try {
+    const checkoutEvent = await Checkout.getCheckoutById(
+      req.params.checkoutId
+    ).update(req.body);
+    if (checkoutEvent) {
+      res.status(200).json({ message: "Checkout returned!" });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.post("/:userId/checkout", async (req, res) => {
   try {
     let checkoutDate = Date.now();
