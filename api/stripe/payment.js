@@ -21,32 +21,34 @@ router.post("/charges", async (req, res) => {
 
 router.post("/create_customer", async (req, res) => {
   try {
-    const token = req.body.stripeToken;
+    console.log(req.body.id);
+    console.log(req.body.email);
+    // const token = req.body.stripeToken;
     const customer = await stripe.customers.create({
       // account_balance: req.body.amount || 0,
-      // email: req.body.email,
+      email: req.body.email,
       // name: req.body.name,
       // description:
       //   req.body.description || `Stripe Account for ${req.body.email}`,
-      source: token
+      source: req.body.id
     });
-    console.log(customer);
+    // console.log(customer);
 
-    if (customer.id) {
-      const success = await models.updateStripe(
-        "users",
-        { email: customer.email },
-        { stripe_cust_id: customer.id }
-      );
-      res
-        .status(201)
-        .json({ message: "Customer created successfully", customer });
-    } else {
-      res.status(500).json({
-        message:
-          "There was an issue when we created the customer account, please try again."
-      });
-    }
+    // if (customer.id) {
+    //   const success = await models.updateStripe(
+    //     "users",
+    //     { email: customer.email },
+    //     { stripe_cust_id: customer.id }
+    //   );
+    //   res
+    //     .status(201)
+    //     .json({ message: "Customer created successfully", customer });
+    // } else {
+    //   res.status(500).json({
+    //     message:
+    //       "There was an issue when we created the customer account, please try again."
+    //   });
+    // }
   } catch ({ message }) {
     res.status(404).json({ message });
   }
