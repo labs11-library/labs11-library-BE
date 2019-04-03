@@ -5,7 +5,7 @@ const stripe = require("stripe")(process.env.SECRET_KEY);
 router.post("/charges", async (req, res) => {
   try {
     const charge = await stripe.charges.create({
-      amount: 2000,
+      amount: 100,
       currency: "usd"
       // stripeToken,
       // stripeTokenType,
@@ -15,7 +15,7 @@ router.post("/charges", async (req, res) => {
   }
 });
 
-route.post("/create_customer", async (req, res) => {
+router.post("/create_customer", async (req, res) => {
   try {
     const customer = await stripe.customers.create({
       account_balance: req.body.amount || 0,
@@ -24,6 +24,7 @@ route.post("/create_customer", async (req, res) => {
         req.body.description || `Stripe Account for ${req.body.email}`,
       source: req.body.stripeToken
     });
+    console.log(customer);
 
     if (customer.id) {
       const success = await models.updateStripe(
@@ -35,14 +36,14 @@ route.post("/create_customer", async (req, res) => {
         .status(201)
         .json({ message: "Customer created successfully", customer });
     } else {
-      res
-        .status(500)
-        .json({
-          message:
-            "There was an issue when we created the customer account, please try again."
-        });
+      res.status(500).json({
+        message:
+          "There was an issue when we created the customer account, please try again."
+      });
     }
   } catch ({ message }) {
     res.status(404).json({ message });
   }
 });
+
+module.exports = router;
