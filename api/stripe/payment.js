@@ -1,15 +1,19 @@
 require("dotenv").config();
 const router = require("express").Router();
 const stripe = require("stripe")(process.env.SECRET_KEY);
+const models = require("../helpers/usersModel");
 
 router.post("/charges", async (req, res) => {
   try {
+    const token = req.body.stripeToken;
     const charge = await stripe.charges.create({
       amount: 100,
-      currency: "usd"
+      currency: "usd",
+      source: token
       // stripeToken,
       // stripeTokenType,
     });
+    console.log(charge);
   } catch ({ message }) {
     res.status(500).json({ message });
   }
@@ -17,19 +21,21 @@ router.post("/charges", async (req, res) => {
 
 router.post("/create_customer", async (req, res) => {
   try {
+    const token = req.body.stripeToken;
     const customer = await stripe.customers.create({
-      account_balance: req.body.amount || 0,
-      email: req.body.email,
-      description:
-        req.body.description || `Stripe Account for ${req.body.email}`,
-      source: req.body.stripeToken
+      // account_balance: req.body.amount || 0,
+      // email: req.body.email,
+      // name: req.body.name,
+      // description:
+      //   req.body.description || `Stripe Account for ${req.body.email}`,
+      source: token
     });
     console.log(customer);
 
     if (customer.id) {
       const success = await models.updateStripe(
         "users",
-        { email: customer.email, id: req.decoded.id },
+        { email: customer.email },
         { stripe_cust_id: customer.id }
       );
       res
