@@ -40,13 +40,13 @@ router.post("/:userId/checkout", async (req, res) => {
   try {
     const item = await db("checkout").insert(req.body);
     const updatedRequest = await db("checkoutRequest")
-      .update({ checkoutAccepted: true })
       .where({ checkoutRequestId: req.body.checkoutRequestId })
-      .first();
+      .first()
+      .update({ checkoutAccepted: true });
     const updatedBook = await db("books")
-      .update({ available: false })
       .where({ bookId: req.body.bookId })
-      .first();
+      .first()
+      .update({ available: false });
     if (item && updatedRequest && updatedBook) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
