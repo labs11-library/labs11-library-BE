@@ -1,7 +1,7 @@
 const knex = require("knex");
 const knexConfig = require("../../knexfile");
 
-const db = knex(knexConfig.production);
+const db = knex(knexConfig.development);
 
 module.exports = {
   getCheckoutRequests,
@@ -27,7 +27,8 @@ function getCheckoutRequests(userId) {
       "books.title",
       "books.authors",
       "books.description",
-      "books.image"
+      "books.image",
+      "checkoutRequest.checkoutAccepted"
     )
     .where("borrowers.userId", userId)
     .orWhere("lenders.userId", userId);
@@ -54,7 +55,8 @@ function getCheckoutRequestById(checkoutRequestId) {
       "books.title",
       "books.authors",
       "books.description",
-      "books.image"
+      "books.image",
+      "checkoutRequest.checkoutAccepted"
     )
     .where("checkoutRequest.checkoutRequestId", checkoutRequestId)
     .first();

@@ -43,11 +43,11 @@ router.post("/:userId/checkout", async (req, res) => {
       .where({ checkoutRequestId: req.body.checkoutRequestId })
       .first()
       .update({ checkoutAccepted: true });
-    const updatedBook = await db("books")
-      .where({ bookId: req.body.bookId })
-      .first()
-      .update({ available: false });
-    if (item && updatedRequest && updatedBook) {
+    // const updatedBook = await db("books")
+    //   .where({ bookId: req.body.bookId })
+    //   .first()
+    //   .update({ available: false });
+    if (item && updatedRequest) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
       res.status(404).json(error);
