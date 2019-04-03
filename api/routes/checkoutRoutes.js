@@ -39,7 +39,15 @@ router.get("/:userId/checkout/:checkoutId", async (req, res) => {
 router.post("/:userId/checkout", async (req, res) => {
   try {
     const item = await db("checkout").insert(req.body);
-    if (item) {
+    const updatedRequest = await db("checkoutRequest")
+      .update({ checkoutAccepted: true })
+      .where({ checkoutRequestId: req.body.checkoutRequestId })
+      .first();
+    const updatedBook = await db("books")
+      .update({ available: false })
+      .where({ bookId: req.body.bookId })
+      .first();
+    if (item && updatedRequest && updatedBook) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
       res.status(404).json(error);
