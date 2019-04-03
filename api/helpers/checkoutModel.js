@@ -1,7 +1,7 @@
 const knex = require("knex");
 const knexConfig = require("../../knexfile");
 
-const db = knex(knexConfig.production);
+const db = knex(knexConfig.development);
 
 module.exports = {
   getCheckout,
@@ -56,6 +56,9 @@ function getCheckoutById(checkoutId) {
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",
+      "books.authors",
+      "books.description",
+      "books.image",
       "checkout.checkoutDate",
       "checkout.dueDate",
       "checkout.returned"
