@@ -38,11 +38,10 @@ router.get("/:userId/checkout/:checkoutId", async (req, res) => {
 });
 
 router.post("/:userId/checkout", async (req, res) => {
-  const checkoutDate = Date.now();
-  const threeWeeks = moment(new Date(checkoutDate)).add(21, "days");
-  const dueDate = moment(threeWeeks).format("YYYY-MM-DD HH:mm:ss");
-
   try {
+    let checkoutDate = Date.now();
+    let threeWeeks = moment(new Date(checkoutDate)).add(21, "days");
+    let dueDate = moment(threeWeeks).format("YYYY-MM-DD HH:mm:ss");
     const item = await db("checkout").insert({ ...req.body, dueDate });
     const updatedRequest = await db("checkoutRequest")
       .where({ checkoutRequestId: req.body.checkoutRequestId })
