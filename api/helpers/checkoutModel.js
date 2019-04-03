@@ -34,6 +34,7 @@ function getCheckout(userId) {
       "books.authors",
       "books.description",
       "books.image",
+      "books.value"
       "checkout.checkoutDate",
       "checkout.dueDate",
       "checkout.returned"
@@ -70,6 +71,7 @@ function getCheckoutById(checkoutId) {
       "books.authors",
       "books.description",
       "books.image",
+      "books.value",
       "checkout.checkoutDate",
       "checkout.dueDate",
       "checkout.returned"
