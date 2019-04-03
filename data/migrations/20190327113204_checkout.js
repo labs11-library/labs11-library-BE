@@ -9,7 +9,7 @@ exports.up = function(knex, Promise) {
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
     table.timestamp("checkoutDate").defaultTo(knex.fn.now());
-    table.time("dueDate");
+    table.datetime("dueDate");
     table.boolean("returned").defaultTo(false);
   });
 };
