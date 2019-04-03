@@ -22,6 +22,7 @@ exports.up = function(knex, Promise) {
       .inTable("books")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
+    table.bool("checkoutAccepted");
   });
 };
 
