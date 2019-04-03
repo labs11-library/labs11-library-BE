@@ -56,6 +56,9 @@ function getCheckoutById(checkoutId) {
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",
+      "books.authors",
+      "books.description",
+      "books.image",
       "checkout.checkoutDate",
       "checkout.dueDate",
       "checkout.returned"
