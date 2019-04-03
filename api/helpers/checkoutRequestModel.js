@@ -28,6 +28,7 @@ function getCheckoutRequests(userId) {
       "books.authors",
       "books.description",
       "books.image",
+      "books.value",
       "checkoutRequest.checkoutAccepted"
     )
     .where("borrowers.userId", userId)
@@ -56,6 +57,7 @@ function getCheckoutRequestById(checkoutRequestId) {
       "books.authors",
       "books.description",
       "books.image",
+      "books.value",
       "checkoutRequest.checkoutAccepted"
     )
     .where("checkoutRequest.checkoutRequestId", checkoutRequestId)
