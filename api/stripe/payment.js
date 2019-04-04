@@ -3,6 +3,8 @@ const router = require("express").Router();
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const models = require("../helpers/usersModel");
 
+const db = require("../../data/dbConfig");
+
 router.post("/charges", async (req, res) => {
   try {
     const token = req.body.stripeToken;
@@ -33,18 +35,19 @@ router.post("/create_customer", async (req, res) => {
       source: req.body.id
     });
     console.log(customer.id);
+    const editedUser = await db("users")
+      .where({ email: customer.email })
+      .update({
+        stripe_email: customer.email,
+        stripe_cust_id: customer.id,
+        stripe_card_id: customer.default_source
+      });
 
-    if (customer.id) {
+    if (editedUser) {
       console.log("working");
-      const success = await models.updateStripe(
-        "users",
-        { stripe_email: customer.email },
-        { stripe_cust_id: customer.id },
-        { stripe_card_id: customer.default_source }
-      );
       res
         .status(201)
-        .json({ message: "Customer created successfully", success });
+        .json({ message: "Customer created successfully", editedUser });
     } else {
       res.status(500).json({
         message:
