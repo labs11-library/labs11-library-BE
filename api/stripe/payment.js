@@ -22,7 +22,7 @@ router.post("/charges", async (req, res) => {
 
 router.post("/create_customer", async (req, res) => {
   try {
-    console.log(req.body);
+    console.log(req.body.id);
     console.log(req.body.email);
     // const token = req.body.stripeToken;
     const customer = await stripe.customers.create({
@@ -33,21 +33,20 @@ router.post("/create_customer", async (req, res) => {
       //   req.body.description || `Stripe Account for ${req.body.email}`,
       source: req.body.id
     });
-    console.log(customer);
+    console.log(customer.id);
+    const editedUser = await db("users")
+      .where({ email: customer.email })
+      .update({
+        stripe_email: customer.email,
+        stripe_cust_id: customer.id,
+        stripe_card_id: customer.default_source
+      });
 
-    if (customer.id) {
+    if (editedUser) {
       console.log("working");
-      const success = await db("users")
-        .where({ email: customer.email })
-        .first()
-        .update({
-          stripe_email: customer.email,
-          stripe_cust_id: customer.id,
-          stripe_card_id: customer.default_source
-        });
       res
         .status(201)
-        .json({ message: "Customer created successfully", success });
+        .json({ message: "Customer created successfully", editedUser });
     } else {
       res.status(500).json({
         message:
