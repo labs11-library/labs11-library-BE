@@ -21,8 +21,9 @@ const checkoutRoutes = require("./routes/checkoutRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const emailRoutes = require("./sendgrid/Sendgrid");
-// const paymentRoutes = require("./routes/paymentRoute");
+const paymentRoutes = require("./stripe/payment");
 
+server.use("/payment", paymentRoutes);
 server.use("/auth", auth);
 server.use("/users", userRoutes);
 server.use("/users", inventoryRoutes);
