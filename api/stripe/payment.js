@@ -39,6 +39,7 @@ router.post("/create_customer", async (req, res) => {
       console.log("working");
       const success = await db("users")
         .where({ email: customer.email })
+        .first()
         .update({
           stripe_email: customer.email,
           stripe_cust_id: customer.id,
