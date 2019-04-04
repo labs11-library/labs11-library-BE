@@ -48,7 +48,7 @@ router.get(
 //   passport.authenticate("facebook", {
 //     successRedirect: "/users",
 //     failureRedirect: "/auth/facebook"
-//   })
+//   }) hii
 // );
 module.exports = router;
 
