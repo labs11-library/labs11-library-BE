@@ -67,8 +67,6 @@ router.put("/:userId/inventory/:bookId", async (req, res) => {
 
 router.post("/:userId/inventory", async (req, res) => {
   try {
-    // const inventory = await Inventory.getInventory(req.params.id);
-    // const book = await db("books").insert(req.body);
     const item = await db("books").insert({
       ...req.body,
       userId: req.params.userId

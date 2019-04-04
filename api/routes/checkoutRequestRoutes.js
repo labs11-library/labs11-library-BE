@@ -40,6 +40,8 @@ router.get("/:userId/checkoutRequest/:checkoutRequestId", async (req, res) => {
   }
 });
 
+//POST checkout request
+
 router.post("/:userId/checkoutRequest", async (req, res) => {
   try {
     const item = await db("checkoutRequest").insert({
@@ -55,5 +57,25 @@ router.post("/:userId/checkoutRequest", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+//DELETE checkout reqeust
+
+router.delete(
+  "/:userId/checkoutRequest/:checkoutRequestId",
+  async (req, res) => {
+    try {
+      const checkoutRequestDelete = await db("checkoutRequest")
+        .where({ checkoutRequestId: req.params.checkoutRequestId })
+        .del();
+      if (checkoutRequestDelete) {
+        res.status(200).json({ message: "Checkout request deleted" });
+      } else {
+        res.status(404).json(error);
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
 
 module.exports = router;

@@ -14,7 +14,7 @@ function getAllBooks() {
     .select(
       "books.bookId as bookId",
       "lenders.firstName as lender",
-      "lenders.userId",
+      "lenders.userId as lenderId",
       "lenders.latitude as latitude",
       "lenders.latitude as longitude",
       "books.title",
@@ -23,7 +23,8 @@ function getAllBooks() {
       "books.ISBN",
       "books.avgRating",
       "books.description",
-      "books.available"
+      "books.available",
+      "books.value"
     );
 
   return books;
@@ -44,7 +45,8 @@ function getBookById(bookId) {
       "books.ISBN",
       "books.avgRating",
       "books.description",
-      "books.available"
+      "books.available",
+      "books.value"
     )
     .where("books.bookId", bookId);
 

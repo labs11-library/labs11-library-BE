@@ -16,7 +16,11 @@ function getCheckout(userId) {
       "checkoutRequest.checkoutRequestId"
     )
     .join("users as lenders", "checkoutRequest.lenderId", "lenders.userId")
-    .join("users as borrowers", "checkoutRequest.lenderId", "borrowers.userId")
+    .join(
+      "users as borrowers",
+      "checkoutRequest.borrowerId",
+      "borrowers.userId"
+    )
     .join("books", "checkoutRequest.bookId", "books.bookId")
     .select(
       "checkoutId",
@@ -27,6 +31,10 @@ function getCheckout(userId) {
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",
+      "books.authors",
+      "books.description",
+      "books.image",
+      "books.value"
       "checkout.checkoutDate",
       "checkout.dueDate",
       "checkout.returned"
@@ -45,7 +53,11 @@ function getCheckoutById(checkoutId) {
       "checkoutRequest.checkoutRequestId"
     )
     .join("users as lenders", "checkoutRequest.lenderId", "lenders.userId")
-    .join("users as borrowers", "checkoutRequest.lenderId", "borrowers.userId")
+    .join(
+      "users as borrowers",
+      "checkoutRequest.borrowerId",
+      "borrowers.userId"
+    )
     .join("books", "checkoutRequest.bookId", "books.bookId")
     .select(
       "checkoutId",
@@ -56,6 +68,10 @@ function getCheckoutById(checkoutId) {
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",
+      "books.authors",
+      "books.description",
+      "books.image",
+      "books.value",
       "checkout.checkoutDate",
       "checkout.dueDate",
       "checkout.returned"

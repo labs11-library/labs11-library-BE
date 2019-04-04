@@ -26,18 +26,3 @@ function getReviewList(userId) {
 
   return items;
 }
-
-// const items = db("reviews")
-// .join("users as borrowers", "reviews.borrowerId", "borrowers.userId")
-// .join("users as lenders", "reviews.lenderId", "lenders.userId")
-// .select(
-//   "reviews.reviewId",
-//   "reviews.reviewText",
-//   "reviews.rating",
-//   "borrowers.userId as borrowerId",
-//   "borrowers.firstName as borrowerName",
-//   "lenders.userId as lenderId",
-//   "lenders.firstName as lenderName"
-// )
-// .where("reviews.borrowerId", userId)
-// .orWhere("reviews.lenderId", userId);
