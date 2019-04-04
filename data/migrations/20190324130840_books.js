@@ -14,8 +14,8 @@ exports.up = function(knex, Promise) {
     table.integer("ISBN");
     table.float("avgRating");
     table.text("description");
+    table.float("value").defaultTo("10.00");
     table.boolean("available").defaultTo(true);
-    table.boolean("checkOutRequest");
   });
 };
 
