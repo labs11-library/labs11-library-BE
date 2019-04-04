@@ -4,6 +4,8 @@ const stripe = require("stripe")(process.env.SECRET_KEY);
 const models = require("../helpers/usersModel");
 const db = require("../../data/dbConfig");
 
+const db = require("../../data/dbConfig");
+
 router.post("/charges", async (req, res) => {
   try {
     const token = req.body.stripeToken;
@@ -45,6 +47,9 @@ router.post("/create_customer", async (req, res) => {
 
     if (editedUser) {
       console.log("working");
+      res
+        .status(201)
+        .json({ message: "Customer created successfully", editedUser });
       res.status(201).json(editedUser);
     } else {
       res.status(500).json({
