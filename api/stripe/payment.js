@@ -35,6 +35,7 @@ router.post("/create_customer", async (req, res) => {
     console.log(customer.id);
 
     if (customer.id) {
+      console.log("working");
       const success = await models.updateStripe(
         "users",
         { stripe_email: customer.email },
@@ -51,7 +52,7 @@ router.post("/create_customer", async (req, res) => {
       });
     }
   } catch ({ message }) {
-    res.status(404).json({ message });
+    res.status(501).json({ message });
   }
 });
 
