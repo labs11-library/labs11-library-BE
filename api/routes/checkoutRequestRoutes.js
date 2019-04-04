@@ -64,9 +64,9 @@ router.delete(
   "/:userId/checkoutRequest/:checkoutRequestId",
   async (req, res) => {
     try {
-      const checkoutRequestDelete = await CheckoutRequest.getCheckoutRequestById(
-        req.params.checkoutRequestId
-      ).del();
+      const checkoutRequestDelete = await db("checkoutRequest")
+        .where({ checkoutRequestId: req.params.checkoutRequestId })
+        .del();
       if (checkoutRequestDelete) {
         res.status(200).json({ message: "Checkout request deleted" });
       } else {

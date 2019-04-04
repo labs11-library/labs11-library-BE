@@ -27,7 +27,9 @@ function getCheckoutRequests(userId) {
       "books.title",
       "books.authors",
       "books.description",
-      "books.image"
+      "books.image",
+      "books.value",
+      "checkoutRequest.checkoutAccepted"
     )
     .where("borrowers.userId", userId)
     .orWhere("lenders.userId", userId);
@@ -54,7 +56,9 @@ function getCheckoutRequestById(checkoutRequestId) {
       "books.title",
       "books.authors",
       "books.description",
-      "books.image"
+      "books.image",
+      "books.value",
+      "checkoutRequest.checkoutAccepted"
     )
     .where("checkoutRequest.checkoutRequestId", checkoutRequestId)
     .first();
