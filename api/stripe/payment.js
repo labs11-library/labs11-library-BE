@@ -34,14 +34,14 @@ router.post("/create_customer", async (req, res) => {
       source: req.body.id
     });
     console.log(customer.id);
-    const editedUser = await db("users")
-      .where({ email: customer.email })
-      .first()
-      .update({
-        stripe_email: customer.email,
-        stripe_cust_id: customer.id,
-        stripe_card_id: customer.default_source
-      });
+    const editedUser = await db("users");
+    //   .where({ email: customer.email })
+    //   .first()
+    //   .update({
+    //     stripe_email: customer.email,
+    //     stripe_cust_id: customer.id,
+    //     stripe_card_id: customer.default_source
+    //   });
 
     if (editedUser) {
       console.log("working");
