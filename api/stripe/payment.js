@@ -32,23 +32,24 @@ router.post("/create_customer", async (req, res) => {
       //   req.body.description || `Stripe Account for ${req.body.email}`,
       source: req.body.id
     });
-    // console.log(customer);
+    console.log(customer.id);
 
-    // if (customer.id) {
-    //   const success = await models.updateStripe(
-    //     "users",
-    //     { email: customer.email },
-    //     { stripe_cust_id: customer.id }
-    //   );
-    //   res
-    //     .status(201)
-    //     .json({ message: "Customer created successfully", customer });
-    // } else {
-    //   res.status(500).json({
-    //     message:
-    //       "There was an issue when we created the customer account, please try again."
-    //   });
-    // }
+    if (customer.id) {
+      const success = await models.updateStripe(
+        "users",
+        { stripe_email: customer.email },
+        { stripe_cust_id: customer.id },
+        { stripe_card_id: customer.default_source }
+      );
+      res
+        .status(201)
+        .json({ message: "Customer created successfully", success });
+    } else {
+      res.status(500).json({
+        message:
+          "There was an issue when we created the customer account, please try again."
+      });
+    }
   } catch ({ message }) {
     res.status(404).json({ message });
   }
