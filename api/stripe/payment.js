@@ -2,6 +2,7 @@ require("dotenv").config();
 const router = require("express").Router();
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const models = require("../helpers/usersModel");
+const db = require("../../data/dbConfig");
 
 const db = require("../../data/dbConfig");
 
@@ -37,6 +38,7 @@ router.post("/create_customer", async (req, res) => {
     console.log(customer.id);
     const editedUser = await db("users")
       .where({ email: customer.email })
+      .first()
       .update({
         stripe_email: customer.email,
         stripe_cust_id: customer.id,
@@ -48,6 +50,7 @@ router.post("/create_customer", async (req, res) => {
       res
         .status(201)
         .json({ message: "Customer created successfully", editedUser });
+      res.status(201).json(editedUser);
     } else {
       res.status(500).json({
         message:

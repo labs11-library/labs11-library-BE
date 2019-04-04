@@ -11,7 +11,10 @@ module.exports = server => {
   server.use(
     cors({
       credentials: true,
-      origin: ["http://localhost:3000", "https://bookmaps.netlify.com"],
+      origin: [
+        "http://localhost:3000",
+        "https://bookmaps.netlify.com"
+      ],
       AccessControlAllowOrigin: [
         "http://localhost:9001",
         "https://book-maps.herokuapp.com"

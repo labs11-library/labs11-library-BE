@@ -20,7 +20,11 @@ router.get("/send-email", (req, res) => {
 		text: text
 	};
 	console.log(message);
-	sgMail.send(message);
+	sgMail
+	.send(message)
+	.then(console.log("BE success"))
+	.catch(err => console.error(err))
+	
 });
 
 module.exports = router;
