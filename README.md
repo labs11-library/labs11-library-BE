@@ -18,7 +18,7 @@
 
 ### USER ROUTES
 
-#### GET all Users
+#### GET All Users
 
 URL: /users
 
