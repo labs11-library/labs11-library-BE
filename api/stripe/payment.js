@@ -4,8 +4,6 @@ const stripe = require("stripe")(process.env.SECRET_KEY);
 const models = require("../helpers/usersModel");
 const db = require("../../data/dbConfig");
 
-const db = require("../../data/dbConfig");
-
 router.post("/charges", async (req, res) => {
   try {
     const token = req.body.stripeToken;
