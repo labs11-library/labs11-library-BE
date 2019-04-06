@@ -40,7 +40,10 @@ function getCheckout(userId) {
       "books.avgRating",
       "checkout.checkoutDate",
       "checkout.dueDate",
-      "checkout.returned"
+      "checkout.returned",
+      "checkout.returnedDate",
+      "checkout.overdue",
+      "checkout.lateFee"
     )
     .where("checkoutRequest.borrowerId", userId)
     .orWhere("checkoutRequest.lenderId", userId);
@@ -79,7 +82,10 @@ function getCheckoutById(checkoutId) {
       "books.value",
       "checkout.checkoutDate",
       "checkout.dueDate",
-      "checkout.returned"
+      "checkout.returned",
+      "checkout.returnedDate",
+      "checkout.overdue",
+      "checkout.lateFee"
     )
     .where("checkout.checkoutId", checkoutId)
     .first();
