@@ -37,6 +37,7 @@ function getCheckout(userId) {
       "books.description",
       "books.image",
       "books.value",
+      "books.avgRating",
       "checkout.checkoutDate",
       "checkout.dueDate",
       "checkout.returned"

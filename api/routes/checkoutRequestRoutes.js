@@ -44,6 +44,23 @@ router.get(
   }
 );
 
+//PUT
+
+router.put("/:userId/checkoutRequest/:checkoutRequestId", async (req, res) => {
+  try {
+    const editedCheckoutRequest = await CheckoutRequest.getCheckoutRequestById(
+      req.params.checkoutRequestId
+    ).update(req.body);
+    if (editedCheckoutRequest) {
+      res.status(200).json({ message: "Checkout request edited" });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 //POST checkout request
 
 router.post("/:userId/checkoutRequest", async (req, res) => {
