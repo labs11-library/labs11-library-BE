@@ -60,11 +60,11 @@ router.post("/:userId/checkout", async (req, res) => {
     let threeWeeks = moment(new Date(checkoutDate)).add(21, "days");
     let dueDate = moment(threeWeeks).format("YYYY-MM-DD HH:mm:ss");
     const item = await db("checkout").insert({ ...req.body, dueDate });
-    // const updatedRequest = await db("checkoutRequest")
-    //   .where({ checkoutRequestId: req.body.checkoutRequestId })
-    //   .first()
-    //   .update({ checkoutAccepted: true });
-    if (item) {
+    const updatedRequest = await db("checkoutRequest")
+      .where({ checkoutRequestId: req.body.checkoutRequestId })
+      .first()
+      .update({ checkoutAccepted: true });
+    if (item && updatedRequest) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
       res.status(404).json(error);
