@@ -10,7 +10,10 @@ exports.up = function(knex, Promise) {
       .onUpdate("CASCADE");
     table.timestamp("checkoutDate").defaultTo(knex.fn.now());
     table.datetime("dueDate");
+    table.boolean("overdue");
     table.boolean("returned").defaultTo(false);
+    table.datetime("returnedDate");
+    table.float("lateFee");
   });
 };
 
