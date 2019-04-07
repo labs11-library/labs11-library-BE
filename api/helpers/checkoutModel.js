@@ -26,8 +26,10 @@ function getCheckout(userId) {
       "checkoutId",
       "checkoutRequest.checkoutRequestId",
       "borrowers.firstName as borrower",
+      "borrowers.email as borrowerEmail",
       "checkoutRequest.borrowerId",
       "lenders.firstName as lender",
+      "lenders.email as lenderEmail",
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",
@@ -35,9 +37,13 @@ function getCheckout(userId) {
       "books.description",
       "books.image",
       "books.value",
+      "books.avgRating",
       "checkout.checkoutDate",
       "checkout.dueDate",
-      "checkout.returned"
+      "checkout.returned",
+      "checkout.returnedDate",
+      "checkout.overdue",
+      "checkout.lateFee"
     )
     .where("checkoutRequest.borrowerId", userId)
     .orWhere("checkoutRequest.lenderId", userId);
@@ -63,8 +69,10 @@ function getCheckoutById(checkoutId) {
       "checkoutId",
       "checkoutRequest.checkoutRequestId",
       "borrowers.firstName as borrower",
+      "borrowers.email as borrowerEmail",
       "checkoutRequest.borrowerId",
       "lenders.firstName as lender",
+      "lenders.email as lenderEmail",
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",
@@ -74,7 +82,10 @@ function getCheckoutById(checkoutId) {
       "books.value",
       "checkout.checkoutDate",
       "checkout.dueDate",
-      "checkout.returned"
+      "checkout.returned",
+      "checkout.returnedDate",
+      "checkout.overdue",
+      "checkout.lateFee"
     )
     .where("checkout.checkoutId", checkoutId)
     .first();
