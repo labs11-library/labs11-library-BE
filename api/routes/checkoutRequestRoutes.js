@@ -8,8 +8,9 @@ const CheckoutRequest = require("../helpers/checkoutRequestModel");
 
 //GET User's checkedout list
 
-router.get("/:userId/checkoutRequest", authenticate, async (req, res) => {
+router.get("/:userId/checkoutRequest", async (req, res) => {
   try {
+    //AUTHBACK
     const checkoutRequests = await CheckoutRequest.getCheckoutRequests(
       req.params.userId
     );
@@ -27,8 +28,9 @@ router.get("/:userId/checkoutRequest", authenticate, async (req, res) => {
 
 router.get(
   "/:userId/checkoutRequest/:checkoutRequestId",
-  authenticate,
+
   async (req, res) => {
+    //AUTHBACK
     try {
       const checkoutRequest = await CheckoutRequest.getCheckoutRequestById(
         req.params.checkoutRequestId
