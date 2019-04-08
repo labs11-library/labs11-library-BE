@@ -76,7 +76,9 @@ router.post("/charge", async (req, res) => {
       customer: req.body.customer
     });
     if (charge) {
-      res.status(200).json({ message: "Late fee charged successfully" });
+      res
+        .status(200)
+        .json({ message: "Late fee charged successfully", charge });
     } else {
       res.status(404).json(error);
     }
