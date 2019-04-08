@@ -33,6 +33,11 @@ router.post("/create_customer", async (req, res) => {
       //   req.body.description || `Stripe Account for ${req.body.email}`,
       source: req.body.id
     });
+    // const charge = await stripe.charges.create({
+    //   amount: user.lateFee,
+    //   currency: "usd",
+    //   customer: customer.id
+    // });
     console.log(customer.id);
     const editedUser = await db("users")
       .where({ email: customer.email })
