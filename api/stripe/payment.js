@@ -67,9 +67,9 @@ router.post("/create_customer", async (req, res) => {
 
 router.post("/charge", async (req, res) => {
   try {
-    const user = await db("users")
-      .where({ stripe_cust_id: req.body.customer })
-      .first();
+    // const user = await db("users")
+    //   .where({ stripe_cust_id: req.body.customer })
+    //   .first();
     const charge = await stripe.charges.create({
       amount: req.body.amount,
       currency: "usd",
