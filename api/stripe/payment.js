@@ -6,11 +6,10 @@ const db = require("../../data/dbConfig");
 
 router.post("/charges", async (req, res) => {
   try {
-    const token = req.body.stripeToken;
     const charge = await stripe.charges.create({
       amount: 100,
       currency: "usd",
-      source: token
+      customer: req.body.stripe_cust_id
       // stripeToken,
       // stripeTokenType,
     });
