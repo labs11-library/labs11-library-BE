@@ -7,7 +7,7 @@ const db = require("../../data/dbConfig");
 
 //GET all users
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await db("users").orderBy("userId");
     res.status(200).json(users);
@@ -35,8 +35,9 @@ router.post("/", async (req, res) => {
 
 //GET user by id
 
-router.get("/:userId", authenticate, async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
+    //AUTHBACK
     const user = await db("users")
       .where({ userId: req.params.userId })
       .first();

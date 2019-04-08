@@ -9,17 +9,18 @@ module.exports = server => {
   server.use(express.json());
   server.use(morgan("dev"));
   server.use(
-    cors({
-      credentials: true,
-      origin: [
-        "http://localhost:3000",
-        "https://bookmaps.netlify.com"
-      ],
-      AccessControlAllowOrigin: [
-        "http://localhost:9001",
-        "https://book-maps.herokuapp.com"
-      ],
-      AccessControlAllowHeaders: "Authorization"
-    })
+    cors()
+    //   {
+    //   credentials: true,
+    //   origin: [
+    //     "http://localhost:3000",
+    //     "https://bookmaps.netlify.com"
+    //   ],
+    //   AccessControlAllowOrigin: [
+    //     "http://localhost:9001",
+    //     "https://book-maps.herokuapp.com"
+    //   ],
+    //   AccessControlAllowHeaders: "Authorization"
+    // }
   );
 };

@@ -43,7 +43,8 @@ function getCheckout(userId) {
       "checkout.returned",
       "checkout.returnedDate",
       "checkout.overdue",
-      "checkout.lateFee"
+      "checkout.lateFee",
+      "borrowers.stripe_cust_id"
     )
     .where("checkoutRequest.borrowerId", userId)
     .orWhere("checkoutRequest.lenderId", userId);
@@ -85,7 +86,8 @@ function getCheckoutById(checkoutId) {
       "checkout.returned",
       "checkout.returnedDate",
       "checkout.overdue",
-      "checkout.lateFee"
+      "checkout.lateFee",
+      "borrowers.stripe_cust_id"
     )
     .where("checkout.checkoutId", checkoutId)
     .first();

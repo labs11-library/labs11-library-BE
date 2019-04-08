@@ -3,6 +3,7 @@ const router = require("express").Router();
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const models = require("../helpers/usersModel");
 const db = require("../../data/dbConfig");
+const schedule = require("node-schedule");
 
 router.post("/charges", async (req, res) => {
   try {
@@ -22,8 +23,7 @@ router.post("/charges", async (req, res) => {
 
 router.post("/create_customer", async (req, res) => {
   try {
-    console.log(req.body.id);
-    console.log(req.body.email);
+    console.log(req.body);
     // const token = req.body.stripeToken;
     const customer = await stripe.customers.create({
       // account_balance: req.body.amount || 0,
@@ -57,6 +57,27 @@ router.post("/create_customer", async (req, res) => {
     }
   } catch ({ message }) {
     res.status(501).json({ message });
+  }
+});
+
+router.post("/charge", async (req, res) => {
+  const user = await db("users")
+    .where({ stripe_cust_id: req.body.stripe_cust_id })
+    .first();
+  try {
+    console.log("BORROWER", borrower);
+    const charge = await stripe.charges.create({
+      amount: user.lateFee,
+      currency: "usd",
+      customer: user.stripe_cust_id
+    });
+    if (charge) {
+      res.status(200).json({ message: "Late fee charged successfully" });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch {
+    res.status(500).json(error);
   }
 });
 
