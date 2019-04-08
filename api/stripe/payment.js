@@ -71,9 +71,9 @@ router.post("/charge", async (req, res) => {
       .where({ stripe_cust_id: req.body.customer })
       .first();
     const charge = await stripe.charges.create({
-      amount: user.amount,
+      amount: req.body.amount,
       currency: "usd",
-      customer: user.customer
+      customer: req.body.customer
     });
     if (charge) {
       res.status(200).json({ message: "Late fee charged successfully" });
