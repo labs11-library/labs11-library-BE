@@ -66,11 +66,10 @@ router.post("/create_customer", async (req, res) => {
 });
 
 router.post("/charge", async (req, res) => {
-  const user = await db("users")
-    .where({ stripe_cust_id: req.body.customer })
-    .first();
   try {
-    console.log("BORROWER", borrower);
+    const user = await db("users")
+      .where({ stripe_cust_id: req.body.customer })
+      .first();
     const charge = await stripe.charges.create({
       amount: user.amount,
       currency: "usd",
