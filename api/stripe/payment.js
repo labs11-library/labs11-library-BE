@@ -33,6 +33,11 @@ router.post("/create_customer", async (req, res) => {
       //   req.body.description || `Stripe Account for ${req.body.email}`,
       source: req.body.id
     });
+    // const charge = await stripe.charges.create({
+    //   amount: user.lateFee,
+    //   currency: "usd",
+    //   customer: customer.id
+    // });
     console.log(customer.id);
     const editedUser = await db("users")
       .where({ email: customer.email })
@@ -61,18 +66,19 @@ router.post("/create_customer", async (req, res) => {
 });
 
 router.post("/charge", async (req, res) => {
-  const user = await db("users")
-    .where({ stripe_cust_id: req.body.stripe_cust_id })
-    .first();
   try {
-    console.log("BORROWER", borrower);
+    // const user = await db("users")
+    //   .where({ stripe_cust_id: req.body.customer })
+    //   .first();
     const charge = await stripe.charges.create({
-      amount: user.lateFee,
+      amount: req.body.amount,
       currency: "usd",
-      customer: user.stripe_cust_id
+      customer: req.body.customer
     });
     if (charge) {
-      res.status(200).json({ message: "Late fee charged successfully" });
+      res
+        .status(200)
+        .json({ message: "Late fee charged successfully", charge });
     } else {
       res.status(404).json(error);
     }
