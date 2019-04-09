@@ -68,7 +68,8 @@ router.put("/:userId/checkoutRequest/:checkoutRequestId", async (req, res) => {
 router.post("/:userId/checkoutRequest", async (req, res) => {
   try {
     const checkoutRequestList = await db("checkoutRequest").where({
-      borrowerId: req.params.userId
+      borrowerId: req.params.userId,
+      checkoutAccepeted: false
     });
     if (
       checkoutRequestList.map(item => item.bookId).includes(req.body.bookId)
