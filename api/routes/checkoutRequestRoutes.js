@@ -67,17 +67,17 @@ router.put("/:userId/checkoutRequest/:checkoutRequestId", async (req, res) => {
 
 router.post("/:userId/checkoutRequest", async (req, res) => {
   try {
-    const checkoutRequestList = await db("checkoutRequest").where({
-      borrowerId: req.params.userId,
-      checkoutAccepeted: false
-    });
-    if (
-      checkoutRequestList.map(item => item.bookId).includes(req.body.bookId)
-    ) {
-      return res
-        .status(404)
-        .json({ error: "You've already requested this book" });
-    }
+    // const checkoutRequestList = await db("checkoutRequest").where({
+    //   borrowerId: req.params.userId,
+    //   checkoutAccepeted: false
+    // });
+    // if (
+    //   checkoutRequestList.map(item => item.bookId).includes(req.body.bookId)
+    // ) {
+    //   return res
+    //     .status(404)
+    //     .json({ error: "You've already requested this book" });
+    // }
     const item = await db("checkoutRequest").insert({
       ...req.body,
       borrowerId: req.params.userId
