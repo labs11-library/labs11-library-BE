@@ -2,6 +2,8 @@ require("dotenv").config();
 const router = require("express").Router();
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const models = require("../helpers/usersModel");
+const db = require("../../data/dbConfig");
+const schedule = require("node-schedule");
 
 router.post("/charges", async (req, res) => {
   try {
@@ -21,8 +23,7 @@ router.post("/charges", async (req, res) => {
 
 router.post("/create_customer", async (req, res) => {
   try {
-    console.log(req.body.id);
-    console.log(req.body.email);
+    console.log(req.body);
     // const token = req.body.stripeToken;
     const customer = await stripe.customers.create({
       // account_balance: req.body.amount || 0,
@@ -32,25 +33,57 @@ router.post("/create_customer", async (req, res) => {
       //   req.body.description || `Stripe Account for ${req.body.email}`,
       source: req.body.id
     });
-    // console.log(customer);
+    // const charge = await stripe.charges.create({
+    //   amount: user.lateFee,
+    //   currency: "usd",
+    //   customer: customer.id
+    // });
+    console.log(customer.id);
+    const editedUser = await db("users")
+      .where({ email: customer.email })
+      .first()
+      .update({
+        stripe_email: customer.email,
+        stripe_cust_id: customer.id,
+        stripe_card_id: customer.default_source
+      });
 
-    // if (customer.id) {
-    //   const success = await models.updateStripe(
-    //     "users",
-    //     { email: customer.email },
-    //     { stripe_cust_id: customer.id }
-    //   );
-    //   res
-    //     .status(201)
-    //     .json({ message: "Customer created successfully", customer });
-    // } else {
-    //   res.status(500).json({
-    //     message:
-    //       "There was an issue when we created the customer account, please try again."
-    //   });
-    // }
+    if (editedUser) {
+      console.log("working");
+      res
+        .status(201)
+        .json({ message: "Customer created successfully", editedUser });
+      res.status(201).json(editedUser);
+    } else {
+      res.status(500).json({
+        message:
+          "There was an issue when we created the customer account, please try again."
+      });
+    }
   } catch ({ message }) {
-    res.status(404).json({ message });
+    res.status(501).json({ message });
+  }
+});
+
+router.post("/charge", async (req, res) => {
+  try {
+    // const user = await db("users")
+    //   .where({ stripe_cust_id: req.body.customer })
+    //   .first();
+    const charge = await stripe.charges.create({
+      amount: req.body.amount,
+      currency: "usd",
+      customer: req.body.customer
+    });
+    if (charge) {
+      res
+        .status(200)
+        .json({ message: "Late fee charged successfully", charge });
+    } else {
+      res.status(404).json(error);
+    }
+  } catch {
+    res.status(500).json(error);
   }
 });
 

@@ -37,6 +37,7 @@ router.post("/", async (req, res) => {
 
 router.get("/:userId", async (req, res) => {
   try {
+    //AUTHBACK
     const user = await db("users")
       .where({ userId: req.params.userId })
       .first();

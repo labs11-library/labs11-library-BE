@@ -20,8 +20,10 @@ function getCheckoutRequests(userId) {
     .select(
       "checkoutRequest.checkoutRequestId",
       "borrowers.firstName as borrower",
+      "borrowers.email as borrowerEmail",
       "checkoutRequest.borrowerId",
       "lenders.firstName as lender",
+      "lenders.email as lenderEmail",
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",
@@ -49,8 +51,10 @@ function getCheckoutRequestById(checkoutRequestId) {
     .select(
       "checkoutRequest.checkoutRequestId",
       "borrowers.firstName as borrower",
+      "borrowers.email as borrowerEmail",
       "checkoutRequest.borrowerId",
       "lenders.firstName as lender",
+      "lenders.email as lenderEmail",
       "checkoutRequest.lenderId",
       "books.bookId",
       "books.title",

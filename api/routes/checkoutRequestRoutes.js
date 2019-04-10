@@ -10,6 +10,7 @@ const CheckoutRequest = require("../helpers/checkoutRequestModel");
 
 router.get("/:userId/checkoutRequest", async (req, res) => {
   try {
+    //AUTHBACK
     const checkoutRequests = await CheckoutRequest.getCheckoutRequests(
       req.params.userId
     );
@@ -25,13 +26,35 @@ router.get("/:userId/checkoutRequest", async (req, res) => {
 
 //GET specific user checkedOut event by ID
 
-router.get("/:userId/checkoutRequest/:checkoutRequestId", async (req, res) => {
+router.get(
+  "/:userId/checkoutRequest/:checkoutRequestId",
+
+  async (req, res) => {
+    //AUTHBACK
+    try {
+      const checkoutRequest = await CheckoutRequest.getCheckoutRequestById(
+        req.params.checkoutRequestId
+      );
+      if (checkoutRequest) {
+        res.status(200).json(checkoutRequest);
+      } else {
+        res.status(404).json(error);
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
+
+//PUT
+
+router.put("/:userId/checkoutRequest/:checkoutRequestId", async (req, res) => {
   try {
-    const checkoutRequest = await CheckoutRequest.getCheckoutRequestById(
+    const editedCheckoutRequest = await CheckoutRequest.getCheckoutRequestById(
       req.params.checkoutRequestId
-    );
-    if (checkoutRequest) {
-      res.status(200).json(checkoutRequest);
+    ).update(req.body);
+    if (editedCheckoutRequest) {
+      res.status(200).json({ message: "Checkout request edited" });
     } else {
       res.status(404).json(error);
     }
@@ -44,6 +67,18 @@ router.get("/:userId/checkoutRequest/:checkoutRequestId", async (req, res) => {
 
 router.post("/:userId/checkoutRequest", async (req, res) => {
   try {
+    const checkoutRequestList = await db("checkoutRequest").where({
+      borrowerId: req.params.userId,
+      checkoutAccepted: false
+    });
+    console.log(checkoutRequestList);
+    if (
+      checkoutRequestList.map(item => item.bookId).includes(req.body.bookId)
+    ) {
+      return res
+        .status(404)
+        .json({ error: "You've already requested this book" });
+    }
     const item = await db("checkoutRequest").insert({
       ...req.body,
       borrowerId: req.params.userId

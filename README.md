@@ -1,6 +1,6 @@
 # Book Maps Backend https://book-maps.herokuapp.com/
 
-**Contributors**
+**Contributing Engineers**
 
 - [Jacob Layton](https://github.com/JacobLayton)
 - [Scott Vojik](https://github.com/sk-vojik)
