@@ -1,7 +1,7 @@
 const knex = require("knex");
 const knexConfig = require("../../knexfile");
 
-const db = knex(knexConfig.production);
+const db = knex(knexConfig.development);
 
 module.exports = {
   getBookById,
@@ -25,9 +25,9 @@ function getAllBooks() {
       "books.avgRating",
       "books.description",
       "books.available",
-      "books.value"
+      "books.value",
+      "books.dueDate"
     );
-
   return books;
 }
 
@@ -48,9 +48,11 @@ function getBookById(bookId) {
       "books.avgRating",
       "books.description",
       "books.available",
-      "books.value"
+      "books.value",
+      "books.dueDate"
     )
-    .where("books.bookId", bookId);
+    .where("books.bookId", bookId)
+    .orWhere("checkout.bookId", bookId);
 
   return books;
 }
