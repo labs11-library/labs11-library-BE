@@ -11,7 +11,6 @@ module.exports = {
 function getAllBooks() {
   const books = db("books")
     .join("users as lenders", "books.userId", "lenders.userId")
-    .join("checkouts", "books.bookId", "checkouts.bookId")
     .select(
       "books.bookId as bookId",
       "lenders.firstName as lender",
