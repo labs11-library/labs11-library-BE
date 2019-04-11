@@ -26,8 +26,7 @@ function getAllBooks() {
       "books.avgRating",
       "books.description",
       "books.available",
-      "books.value",
-      "checkouts.dueDate"
+      "books.value"
     );
 
   return books;
