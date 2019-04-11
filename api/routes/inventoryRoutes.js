@@ -8,7 +8,7 @@ const Books = require("../helpers/bookModel");
 
 //GET user inventory
 
-router.get("/:userId/inventory", authenticate, async (req, res) => {
+router.get("/:userId/inventory", async (req, res) => {
   try {
     const inventory = await db("books").where({
       userId: req.params.userId
