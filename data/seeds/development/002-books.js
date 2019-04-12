@@ -13,7 +13,8 @@ exports.seed = function(knex, Promise) {
           description: "Used but good condition",
           avgRating: 4.5,
           ISBN: 1837499200,
-          value: null
+          value: null,
+          dueDate: null
         },
         {
           userId: 2,
@@ -23,7 +24,8 @@ exports.seed = function(knex, Promise) {
           description: "Excellent",
           avgRating: 4.8,
           ISBN: 99103294872,
-          value: null
+          value: null,
+          dueDate: null
         }
       ]);
     });

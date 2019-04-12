@@ -25,9 +25,9 @@ function getAllBooks() {
       "books.avgRating",
       "books.description",
       "books.available",
-      "books.value"
+      "books.value",
+      "books.dueDate"
     );
-
   return books;
 }
 
@@ -48,7 +48,8 @@ function getBookById(bookId) {
       "books.avgRating",
       "books.description",
       "books.available",
-      "books.value"
+      "books.value",
+      "books.dueDate"
     )
     .where("books.bookId", bookId);
 

@@ -6,6 +6,7 @@ const { authenticate } = require("../auth/authenticate");
 
 const db = require("../../data/dbConfig");
 const Checkout = require("../helpers/checkoutModel");
+const Books = require("../helpers/bookModel");
 
 // GET User's checkout items
 
@@ -62,10 +63,23 @@ router.post("/:userId/checkout", async (req, res) => {
     let threeWeeks = moment(new Date(checkoutDate)).add(21, "days");
     let dueDate = moment(threeWeeks).format("YYYY-MM-DD HH:mm:ss");
     const item = await db("checkout").insert({ ...req.body, dueDate });
+    const bookId = await db("checkoutRequest")
+      .select("bookId")
+      .where({ checkoutRequestId: req.body.checkoutRequestId })
+      .first();
+    const actualId = bookId.bookId;
     const updatedRequest = await db("checkoutRequest")
       .where({ checkoutRequestId: req.body.checkoutRequestId })
       .first()
       .update({ checkoutAccepted: true });
+    const updateBook = await db("books")
+      .where({ bookId: actualId })
+      .first()
+      .update({
+        dueDate
+      });
+    console.log(actualId);
+    console.log(updateBook);
     if (item && updatedRequest) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
