@@ -84,7 +84,7 @@ router.put("/:bookId", async (req, res) => {
     const editedBook = await db("books")
       .where({ bookId: req.params.id })
       .first();
-    if (book && editedBook) {
+    if (book) {
       return res.status(200).json({ message: "Book edited!", editedBook });
     } else {
       return res.status(404).json(error);
