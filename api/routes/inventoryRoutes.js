@@ -26,8 +26,7 @@ router.get("/:userId/inventory", async (req, res) => {
 
 //GET user specific inventory by id
 
-router.get("/:userId/inventory/:bookId", async (req, res) => {
-  //AUTHBACK
+router.get("/:userId/inventory/:bookId", authenticate, async (req, res) => {
   try {
     const inventory = await db("books")
       .where({ userId: req.params.userId })
