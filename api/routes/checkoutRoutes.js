@@ -44,9 +44,11 @@ router.get("/:userId/checkout/:checkoutId", async (req, res) => {
 
 router.put("/:userId/checkout/:checkoutId", async (req, res) => {
   try {
+    const returned = Date.now();
+    const returnedDate = moment(returned).format("YYYY-MM-DD HH:mm:ss");
     const checkoutEvent = await Checkout.getCheckoutById(
       req.params.checkoutId
-    ).update(req.body);
+    ).update({ ...req.body, returnedDate: returnedDate });
     if (checkoutEvent) {
       res.status(200).json({ message: "Checkout returned!" });
     } else {
