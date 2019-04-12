@@ -51,8 +51,7 @@ function getBookById(bookId) {
       "books.value",
       "books.dueDate"
     )
-    .where("books.bookId", bookId)
-    .orWhere("checkout.bookId", bookId);
+    .where("books.bookId", bookId);
 
   return books;
 }
