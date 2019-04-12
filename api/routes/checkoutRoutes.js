@@ -13,7 +13,9 @@ const Books = require("../helpers/bookModel");
 router.get("/:userId/checkout", async (req, res) => {
   //AUTHBACK
   try {
-    const checkout = await Checkout.getCheckout(req.params.userId);
+    const checkout = await Checkout.getCheckout(req.params.userId).orderBy(
+      "checkoutId"
+    );
     if (checkout) {
       res.status(200).json(checkout);
     } else {
