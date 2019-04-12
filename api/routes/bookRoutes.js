@@ -80,6 +80,7 @@ router.put("/:bookId", async (req, res) => {
   try {
     const book = await db("books")
       .where({ bookId: req.params.bookId })
+      .first()
       .update(req.body);
     const editedBook = await db("books")
       .where({ bookId: req.params.id })
