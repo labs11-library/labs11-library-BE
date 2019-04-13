@@ -6,7 +6,6 @@ const { authenticate } = require("../auth/authenticate");
 
 const db = require("../../data/dbConfig");
 const Checkout = require("../helpers/checkoutModel");
-const Books = require("../helpers/bookModel");
 
 // GET User's checkout items
 
@@ -82,8 +81,7 @@ router.post("/:userId/checkout", async (req, res) => {
       .update({
         dueDate
       });
-    console.log(actualId);
-    console.log(updateBook);
+
     if (item && updatedRequest) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
