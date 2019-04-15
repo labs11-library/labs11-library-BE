@@ -29,10 +29,6 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   res.redirect(`https://bookmaps.netlify.com?token=${token}&userId=${userId}`); //https://bookmaps.netlify.com/
 });
 
-// Redirect the user to Facebook for authentication.  When complete,
-// Facebook will redirect the user back to the application at
-//     /auth/facebook/callback
-// router.get("/facebook", passport.authenticate("facebook"));
 router.get(
   "/facebook",
   passport.authenticate("facebook", {
@@ -40,16 +36,6 @@ router.get(
   })
 );
 
-// ROUTE:   GET auth/facebook/callback
-// DESC:    Allow users to authenticate with facebook
-// ACCESS:  Public
-// router.get(
-//   "/facebook/callback",
-//   passport.authenticate("facebook", {
-//     successRedirect: "/users",
-//     failureRedirect: "/auth/facebook"
-//   }) hii
-// );
 module.exports = router;
 
 router.get(

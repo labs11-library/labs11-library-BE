@@ -32,7 +32,6 @@ router.get("/:userId/inventory/:bookId", authenticate, async (req, res) => {
       .where({ userId: req.params.userId })
       .first();
     const book = await Books.getBookById(req.params.bookId).first();
-    console.log(book);
     if (inventory && book) {
       res.status(200).json(book);
     } else {

@@ -6,14 +6,15 @@ const { authenticate } = require("../auth/authenticate");
 
 const db = require("../../data/dbConfig");
 const Checkout = require("../helpers/checkoutModel");
-const Books = require("../helpers/bookModel");
 
 // GET User's checkout items
 
 router.get("/:userId/checkout", async (req, res) => {
   //AUTHBACK
   try {
-    const checkout = await Checkout.getCheckout(req.params.userId);
+    const checkout = await Checkout.getCheckout(req.params.userId).orderBy(
+      "checkoutId"
+    );
     if (checkout) {
       res.status(200).json(checkout);
     } else {
@@ -44,9 +45,11 @@ router.get("/:userId/checkout/:checkoutId", async (req, res) => {
 
 router.put("/:userId/checkout/:checkoutId", async (req, res) => {
   try {
+    const returned = Date.now();
+    const returnedDate = moment(returned).format("YYYY-MM-DD HH:mm:ss");
     const checkoutEvent = await Checkout.getCheckoutById(
       req.params.checkoutId
-    ).update(req.body);
+    ).update({ ...req.body, returnedDate: returnedDate });
     if (checkoutEvent) {
       res.status(200).json({ message: "Checkout returned!" });
     } else {
@@ -78,8 +81,7 @@ router.post("/:userId/checkout", async (req, res) => {
       .update({
         dueDate
       });
-    console.log(actualId);
-    console.log(updateBook);
+
     if (item && updatedRequest) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
