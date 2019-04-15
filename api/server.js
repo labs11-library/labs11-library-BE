@@ -3,9 +3,6 @@ const config = require("./middleware/middleware.js");
 const server = express();
 const db = require("../data/dbConfig");
 const passport = require("passport");
-const uuid = require("uuidv4");
-const session = require("express-session");
-const KnexSessionStore = require("connect-session-knex")(session);
 const secret = process.env.SECRET;
 
 config(server);
@@ -13,41 +10,42 @@ config(server);
 server.use(passport.initialize());
 server.use(passport.session());
 
-// const sessionConfig = {
-//   secret,
-//   resave: false,
-//   genid: function(req) {
-//     return uuid();
-//   },
-//   saveUninitialized: true,
-//   cookie: { maxAge: 1000 * 60 }, //24 * 1000 * 60 * 60
-//   store: new KnexSessionStore({
-//     tablename: "sessions",
-//     sidfieldname: "sid",
-//     knex: db,
-//     clearInterval: 1000 * 60, // 1000 * 60 * 60
-//     createtable: true
-//   })
-// };
-
-// server.use(session(sessionConfig));
-
 // Routes
 
 const auth = require("./routes/authRoutes");
 const bookRoutes = require("./routes/bookRoutes");
 const userRoutes = require("./routes/userRoutes");
+const inventoryRoutes = require("./routes/inventoryRoutes");
+const checkoutRequestRoutes = require("./routes/checkoutRequestRoutes");
+const checkoutRoutes = require("./routes/checkoutRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const emailRoutes = require("./sendgrid/Sendgrid");
-// const paymentRoutes = require("./routes/paymentRoute");
+const paymentRoutes = require("./stripe/payment");
 
+server.use("/payment", paymentRoutes);
 server.use("/auth", auth);
 server.use("/users", userRoutes);
+server.use("/users", inventoryRoutes);
+server.use("/users", checkoutRequestRoutes);
+server.use("/users", checkoutRoutes);
+server.use("/users", reviewRoutes);
 server.use("/books", bookRoutes);
 server.use("/chat", chatRoutes);
 server.use("/", emailRoutes);
 server.use("/upload", uploadRoutes);
+
+server.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
+
 server.get("/", (req, res) => {
   res.status(200).json({ api: "running" });
 });

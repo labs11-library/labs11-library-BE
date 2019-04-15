@@ -1,8 +1,8 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("checkedOut", table => {
-    table.increments("checkedOutId");
+  return knex.schema.createTable("checkoutRequest", table => {
+    table.increments("checkoutRequestId");
     table
-      .integer("borrowerId") // ID of person checking book out
+      .integer("borrowerId")
       .unsigned()
       .references("userId")
       .inTable("users")
@@ -22,11 +22,10 @@ exports.up = function(knex, Promise) {
       .inTable("books")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
-    table.date("checkoutDate");
-    table.date("dueDate");
+    table.boolean("checkoutAccepted").defaultTo(false);
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists("checkedOut");
+  return knex.schema.dropTableIfExists("checkoutRequest");
 };

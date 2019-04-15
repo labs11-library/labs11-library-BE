@@ -13,6 +13,11 @@ exports.up = function(knex, Promise) {
     table.string("picture");
     table.text("bio", 140);
     table.string("token");
+    table.string("stripeToken");
+    table.float("amount");
+    table.string("stripe_email");
+    table.string("stripe_cust_id");
+    table.string("stripe_card_id");
   });
 };
 

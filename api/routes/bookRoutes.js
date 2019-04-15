@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("../../data/dbConfig");
 const router = express.Router();
+const Books = require("../helpers/bookModel");
 
 const rp = require("request-promise");
 const { parseString } = require("xml2js");
@@ -27,26 +28,27 @@ router.post("/search", (req, res) => {
   );
 });
 
+// GET all books
+
 router.get("/", async (req, res) => {
   try {
-    const books = await db("books").orderBy("bookId");
+    const books = await Books.getAllBooks().orderBy("bookId");
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
+// POST book
+
 router.post("/", async (req, res) => {
   try {
     const book = await db("books").insert(req.body);
-    const newBookList = await db("books");
-    const newBook = await db("books")
-      .where({ title: req.body.title })
-      .first();
+    // const newBook = await db("books")
+    //   .where({ title: req.body.title })
+    //   .first();
     if (book) {
-      return res
-        .status(200)
-        .json({ message: "Book successfully added", newBook });
+      return res.status(200).json({ message: "Book successfully added" });
     } else {
       return res.status(404).json(error);
     }
@@ -55,11 +57,11 @@ router.post("/", async (req, res) => {
   }
 });
 
+//GET Book by ID
+
 router.get("/:bookId", async (req, res) => {
   try {
-    const book = await db("books")
-      .where({ bookId: req.params.bookId })
-      .first();
+    const book = await Books.getBookById(req.params.bookId).first();
     if (book) {
       res.status(200).json(book);
     } else {
@@ -69,6 +71,27 @@ router.get("/:bookId", async (req, res) => {
     res
       .status(500)
       .json({ message: "Could not retrieve the book at this time." });
+  }
+});
+
+// PUT (edit) Book
+
+router.put("/:bookId", async (req, res) => {
+  try {
+    const book = await db("books")
+      .where({ bookId: req.params.bookId })
+      .first()
+      .update(req.body);
+    const editedBook = await db("books")
+      .where({ bookId: req.params.id })
+      .first();
+    if (book || editedBook) {
+      return res.status(200).json({ message: "Book edited!", editedBook });
+    } else {
+      return res.status(404).json(error);
+    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 });
 

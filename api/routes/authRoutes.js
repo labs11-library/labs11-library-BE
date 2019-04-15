@@ -29,18 +29,6 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   res.redirect(`https://bookmaps.netlify.com?token=${token}&userId=${userId}`); //https://bookmaps.netlify.com/
 });
 
-// router.get(
-//   "/google/redirect",
-//   passport.authenticate("google", { failureRedirect: "/" }),
-//   (req, res) => {
-//     res.redirect("http://localhost:3000/");
-//   }
-// );
-
-// Redirect the user to Facebook for authentication.  When complete,
-// Facebook will redirect the user back to the application at
-//     /auth/facebook/callback
-// router.get("/facebook", passport.authenticate("facebook"));
 router.get(
   "/facebook",
   passport.authenticate("facebook", {
@@ -48,14 +36,18 @@ router.get(
   })
 );
 
-// ROUTE:   GET auth/facebook/callback
-// DESC:    Allow users to authenticate with facebook
-// ACCESS:  Public
+module.exports = router;
+
 router.get(
   "/facebook/callback",
-  passport.authenticate("facebook", {
-    successRedirect: "/users",
-    failureRedirect: "/auth/facebook"
-  })
+  passport.authenticate("facebook"),
+  (req, res) => {
+    console.log("HEYYYYYYYYYYYYY", req.user);
+    let userId = req.user.userId;
+    let token = req.user.token;
+    res.cookie("auth", token);
+    res.redirect(
+      `https://bookmaps.netlify.com?token=${token}&userId=${userId}`
+    );
+  }
 );
-module.exports = router;
