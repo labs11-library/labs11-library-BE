@@ -20,6 +20,7 @@ const checkoutRequestRoutes = require("./routes/checkoutRequestRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 const emailRoutes = require("./sendgrid/Sendgrid");
 const paymentRoutes = require("./stripe/payment");
 const uploadRoutes = require("./routes/uploadRoutes");
@@ -44,6 +45,7 @@ server.use(function(req, res, next) {
   );
   next();
 });
+
 
 server.get("/", (req, res) => {
   res.status(200).json({ api: "running" });
