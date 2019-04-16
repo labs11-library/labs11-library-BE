@@ -22,6 +22,7 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const emailRoutes = require("./sendgrid/Sendgrid");
 const paymentRoutes = require("./stripe/payment");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 server.use("/payment", paymentRoutes);
 server.use("/auth", auth);
@@ -33,6 +34,7 @@ server.use("/users", reviewRoutes);
 server.use("/books", bookRoutes);
 server.use("/chat", chatRoutes);
 server.use("/", emailRoutes);
+server.use("/upload", uploadRoutes);
 
 server.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
