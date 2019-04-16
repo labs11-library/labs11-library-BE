@@ -95,23 +95,4 @@ router.put("/:bookId", async (req, res) => {
   }
 });
 
-//Delete
-
-router.del("/:bookId", async (req, res) => {
-  try {
-    const book = await db("books")
-      .where({ bookId: req.params.bookId })
-      .first()
-      .del();
-
-    if (book) {
-      return res.status(200).json({ message: "Book deleted!" });
-    } else {
-      return res.status(404).json(error);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
 module.exports = router;
