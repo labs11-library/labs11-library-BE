@@ -3,6 +3,7 @@ exports.up = function(knex, Promise) {
     table.increments("reviewId");
     table.text("reviewText");
     table.integer("rating");
+    table.string("author");
     table
       .integer("reviewEvent")
       .unsigned()
