@@ -11,13 +11,13 @@ router.get("/", (req, res) => {
 });
 
 router.get("/send-email", (req, res) => {
-	const { recipient, sender, topic, text } = req.query;
+	const { recipient, sender, topic, html } = req.query;
 
 	const message = {
 		to: recipient,
 		from: sender,
 		subject: topic,
-		text: text
+		html: html
 	};
 	console.log(message);
 	sgMail

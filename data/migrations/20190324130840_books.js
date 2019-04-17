@@ -16,6 +16,7 @@ exports.up = function(knex, Promise) {
     table.text("description");
     table.float("value").defaultTo("10.00");
     table.boolean("available").defaultTo(true);
+    table.datetime("dueDate");
   });
 };
 

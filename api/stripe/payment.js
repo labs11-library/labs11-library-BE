@@ -1,9 +1,7 @@
 require("dotenv").config();
 const router = require("express").Router();
 const stripe = require("stripe")(process.env.SECRET_KEY);
-const models = require("../helpers/usersModel");
 const db = require("../../data/dbConfig");
-const schedule = require("node-schedule");
 
 router.post("/charges", async (req, res) => {
   try {
@@ -12,10 +10,7 @@ router.post("/charges", async (req, res) => {
       amount: 100,
       currency: "usd",
       source: token
-      // stripeToken,
-      // stripeTokenType,
     });
-    console.log(charge);
   } catch ({ message }) {
     res.status(500).json({ message });
   }
@@ -23,22 +18,12 @@ router.post("/charges", async (req, res) => {
 
 router.post("/create_customer", async (req, res) => {
   try {
-    console.log(req.body);
-    // const token = req.body.stripeToken;
     const customer = await stripe.customers.create({
-      // account_balance: req.body.amount || 0,
       email: req.body.email,
-      // name: req.body.name,
-      // description:
-      //   req.body.description || `Stripe Account for ${req.body.email}`,
+
       source: req.body.id
     });
-    // const charge = await stripe.charges.create({
-    //   amount: user.lateFee,
-    //   currency: "usd",
-    //   customer: customer.id
-    // });
-    console.log(customer.id);
+
     const editedUser = await db("users")
       .where({ email: customer.email })
       .first()
@@ -49,7 +34,6 @@ router.post("/create_customer", async (req, res) => {
       });
 
     if (editedUser) {
-      console.log("working");
       res
         .status(201)
         .json({ message: "Customer created successfully", editedUser });
@@ -67,9 +51,6 @@ router.post("/create_customer", async (req, res) => {
 
 router.post("/charge", async (req, res) => {
   try {
-    // const user = await db("users")
-    //   .where({ stripe_cust_id: req.body.customer })
-    //   .first();
     const charge = await stripe.charges.create({
       amount: req.body.amount,
       currency: "usd",

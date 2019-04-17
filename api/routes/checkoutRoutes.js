@@ -9,10 +9,11 @@ const Checkout = require("../helpers/checkoutModel");
 
 // GET User's checkout items
 
-router.get("/:userId/checkout", async (req, res) => {
-  //AUTHBACK
+router.get("/:userId/checkout", authenticate, async (req, res) => {
   try {
-    const checkout = await Checkout.getCheckout(req.params.userId);
+    const checkout = await Checkout.getCheckout(req.params.userId).orderBy(
+      "checkoutId"
+    );
     if (checkout) {
       res.status(200).json(checkout);
     } else {
@@ -25,8 +26,7 @@ router.get("/:userId/checkout", async (req, res) => {
 
 //GET specific user checkedOut event by ID
 
-router.get("/:userId/checkout/:checkoutId", async (req, res) => {
-  //AUTHBACK
+router.get("/:userId/checkout/:checkoutId", authenticate, async (req, res) => {
   try {
     const checkoutEvent = await Checkout.getCheckoutById(req.params.checkoutId);
     if (checkoutEvent) {
@@ -43,9 +43,11 @@ router.get("/:userId/checkout/:checkoutId", async (req, res) => {
 
 router.put("/:userId/checkout/:checkoutId", async (req, res) => {
   try {
+    const returned = Date.now();
+    const returnedDate = moment(returned).format("YYYY-MM-DD HH:mm:ss");
     const checkoutEvent = await Checkout.getCheckoutById(
       req.params.checkoutId
-    ).update(req.body);
+    ).update({ ...req.body, returnedDate: returnedDate });
     if (checkoutEvent) {
       res.status(200).json({ message: "Checkout returned!" });
     } else {
@@ -62,10 +64,22 @@ router.post("/:userId/checkout", async (req, res) => {
     let threeWeeks = moment(new Date(checkoutDate)).add(21, "days");
     let dueDate = moment(threeWeeks).format("YYYY-MM-DD HH:mm:ss");
     const item = await db("checkout").insert({ ...req.body, dueDate });
+    const bookId = await db("checkoutRequest")
+      .select("bookId")
+      .where({ checkoutRequestId: req.body.checkoutRequestId })
+      .first();
+    const actualId = bookId.bookId;
     const updatedRequest = await db("checkoutRequest")
       .where({ checkoutRequestId: req.body.checkoutRequestId })
       .first()
       .update({ checkoutAccepted: true });
+    const updateBook = await db("books")
+      .where({ bookId: actualId })
+      .first()
+      .update({
+        dueDate
+      });
+
     if (item && updatedRequest) {
       res.status(200).json({ message: "Book checked out!" });
     } else {
