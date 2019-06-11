@@ -23,7 +23,6 @@ const chatRoutes = require("./routes/chatRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const emailRoutes = require("./sendgrid/Sendgrid");
 const paymentRoutes = require("./stripe/payment");
-const uploadRoutes = require("./routes/uploadRoutes");
 
 server.use("/payment", paymentRoutes);
 server.use("/auth", auth);
