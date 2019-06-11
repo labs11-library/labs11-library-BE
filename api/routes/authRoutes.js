@@ -22,7 +22,6 @@ router.get(
 // DESC:    Allow users to authenticate with google
 // ACCESS:  Public
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-  console.log("USER", req.user);
   let userId = req.user.userId;
   let token = req.user.token;
   res.cookie("auth", token);
@@ -42,7 +41,6 @@ router.get(
   "/facebook/callback",
   passport.authenticate("facebook"),
   (req, res) => {
-    console.log("HEYYYYYYYYYYYYY", req.user);
     let userId = req.user.userId;
     let token = req.user.token;
     res.cookie("auth", token);

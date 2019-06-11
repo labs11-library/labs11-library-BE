@@ -146,4 +146,3 @@ function generateRandomPoint(center, radius) {
 //   10000,
 //   1
 // );
-// console.log(randomGeoPoints);

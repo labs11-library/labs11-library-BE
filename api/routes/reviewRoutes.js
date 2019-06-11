@@ -38,7 +38,6 @@ router.get("/:userId/reviews/:reviewId", async (req, res) => {
 router.post("/reviews", async (req, res) => {
   try {
     const review = await db("reviews").insert(req.body);
-    console.log(review);
     if (review) {
       res.status(200).json({ message: "Review added." });
     } else {

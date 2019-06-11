@@ -11,7 +11,6 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 const generateToken = require("./token-gen");
 
 passport.serializeUser((user, done) => {
-  console.log(user);
   done(null, user.userId);
 });
 
@@ -37,7 +36,6 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       // callback
-      console.log(profile);
       const existingUser = await db("users")
         .where({
           email: profile.emails[0].value
@@ -76,12 +74,10 @@ passport.use(
       profileFields: ["id", "emails", "name", "picture.type(large)"]
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
       const existingUser = await db("users")
         .where({ email: profile.emails[0].value })
         .first();
 
-      console.log("profile", profile);
       if (existingUser) {
         let accessToken = generateToken.generateToken(existingUser.email);
         existingUser.token = accessToken;
