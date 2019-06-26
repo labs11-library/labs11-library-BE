@@ -19,7 +19,6 @@ router.get("/send-email", (req, res) => {
 		subject: topic,
 		html: html
 	};
-	console.log(message);
 	sgMail
 	.send(message)
 	.then(console.log("BE success"))

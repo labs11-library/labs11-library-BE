@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const db = require("../../data/dbConfig");
 
 const { multerUploads, dataUri } = require("../middleware/multer.js");
 const {
@@ -28,5 +29,6 @@ router.post("/", multerUploads, (req, res) => {
     });
   }
 });
+
 
 module.exports = router;

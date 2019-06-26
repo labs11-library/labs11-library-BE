@@ -69,7 +69,6 @@ router.post("/:userId/checkoutRequest", async (req, res) => {
       borrowerId: req.params.userId,
       checkoutAccepted: false
     });
-    console.log(checkoutRequestList);
     if (
       checkoutRequestList.map(item => item.bookId).includes(req.body.bookId)
     ) {
