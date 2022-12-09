@@ -37,7 +37,7 @@
 		"dotenv": "^7.0.0",
 		"dotenv-extended": "^2.4.0",
 		"ejs": "^2.6.1",
-		"express": "^4.16.4",
+		"express": "^4.17.3",
 		"express-pino-logger": "^4.0.0",
 		"express-session": "^1.15.6",
 		"faker": "^4.1.0",
